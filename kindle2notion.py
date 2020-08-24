@@ -20,7 +20,7 @@ class KindleClippings(object):
     def _parseClippings(self, allClippings):
         allClippings = allClippings.split("==========")
         clipCollection = []
-        for i, eachClipping in enumerate(allClippings):
+        for eachClipping in allClippings:
             if '- Your Highlight at location ' in eachClipping:
                 eachClipping = eachClipping.strip().split("\n")
                 title_author = eachClipping[0].replace('(', '|').replace(')', '')
@@ -74,7 +74,7 @@ class KindleClippings(object):
                 lastClip = {
                     'Title': title,
                     'Author': author,
-                    'Page': None,
+                    'Page': page,
                     'Location': location,
                     'Date Added': dateAdded,
                     'Clipping': clipping
@@ -95,7 +95,7 @@ class KindleClippings(object):
                 lastClip = {
                     'Title': title,
                     'Author': author,
-                    'Page': None,
+                    'Page': page,
                     'Location': location,
                     'Date Added': dateAdded,
                     'Clipping': clipping
@@ -114,8 +114,8 @@ class KindleClippings(object):
                 lastClip = {
                     'Title': title,
                     'Author': author,
-                    'Page': None,
-                    'Location': location,
+                    'Page': page,
+                    'Location': None,
                     'Date Added': dateAdded,
                     'Clipping': clipping
                     }
@@ -133,13 +133,14 @@ class KindleClippings(object):
                 lastClip = {
                     'Title': title,
                     'Author': author,
-                    'Page': None,
-                    'Location': location,
+                    'Page': page,
+                    'Location': None,
                     'Date Added': dateAdded,
                     'Clipping': clipping
                     }
                 clipCollection.append(lastClip)
                 self.addToNotion(lastClip)
+                print(self._getClipping())
 
             else:
                 continue
@@ -157,62 +158,81 @@ class KindleClippings(object):
         if not titleExists:
             row.title = lastClip['Title']
             row.author = lastClip['Author']
-            row.highlights =1
-            parentPage = client.get_block(row.id)
+            row.highlights = 0        
+        parentPage = client.get_block(row.id)
+        allClippings = parentPage.children.filter(QuoteBlock)
+        for eachClip in allClippings:
+            if lastClip['Clipping'].strip() == eachClip.title:
+                    clipExists = True
+        if clipExists == False:
             if lastClip['Location'] != None:
-                parentPage.children.add_new(
-                    TextBlock,
-                    title = "Location: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %H:%M:%S"))
-                )
+                if lastClip['Page'] != None:
+                    parentPage.children.add_new(
+                        TextBlock,
+                        title = "Page: " + lastClip['Page'] + "\tLocation: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                    )
+                else:
+                    parentPage.children.add_new(
+                        TextBlock,
+                        title = "Location: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                    )
             else:
                 parentPage.children.add_new(
                     TextBlock,
-                    title = "Page: " + lastClip['Page'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %H:%M:%S"))
+                    title = "Page: " + lastClip['Page'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
                 )
             parentPage.children.add_new(
                 QuoteBlock,
                 title = lastClip['Clipping']
             )
-            row.last_highlighted = NotionDate(lastClip['Date Added']) # dddd, dd MMMM yyyy HH:mm:ss
+            row.highlights +=1
+            row.last_highlighted = NotionDate(lastClip['Date Added'])
             row.last_synced = NotionDate(datetime.now())
-
-        if titleExists:
-            parentPage = client.get_block(row.id)
-            allClippingsInTitle = parentPage.children.filter(QuoteBlock)
-            for eachClip in allClippingsInTitle:
-                if lastClip['Clipping'].strip() == eachClip.title:
-                    clipExists = True
-            if clipExists == False:
-                if lastClip['Location'] != None:
-                    parentPage.children.add_new(
-                        TextBlock,
-                        title = "Location: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %H:%M:%S"))
-                    )
-                else:
-                    parentPage.children.add_new(
-                        TextBlock,
-                        title = "Page: " + lastClip['Page'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %H:%M:%S"))
-                    )
-                parentPage.children.add_new(
-                    QuoteBlock,
-                    title = lastClip['Clipping']
-                    )
-                row.highlights +=1
-                row.last_highlighted = NotionDate(lastClip['Date Added']) # dddd, dd MMMM yyyy HH:mm:ss
-                row.last_synced = NotionDate(datetime.now())
-
 
     def addToNotion(self, lastClip):
         titleExists = False
+        clipExists = False
         global cv
         allRows = cv.collection.get_rows()
         if allRows != []:
             for eachRow in allRows:
                 if lastClip['Title'] == eachRow.title:
                     titleExists = True
-                    self.addNewClippingToRow(lastClip, eachRow, True)
-        if titleExists == False:
-            self.addNewClippingToRow(lastClip, cv.collection.add_row(), False)
+                    row = eachRow
+        if not titleExists:
+            row = cv.collection.add_row()
+            row.title = lastClip['Title']
+            row.author = lastClip['Author']
+            row.highlights = 0
+        parentPage = client.get_block(row.id)
+        allClippings = parentPage.children.filter(QuoteBlock)
+        for eachClip in allClippings:
+            if lastClip['Clipping'].strip() == eachClip.title:
+                    clipExists = True
+        if clipExists == False:
+            if lastClip['Location'] != None:
+                if lastClip['Page'] != None:
+                    parentPage.children.add_new(
+                        TextBlock,
+                        title = "Page: " + lastClip['Page'] + "\tLocation: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                    )
+                else:
+                    parentPage.children.add_new(
+                        TextBlock,
+                        title = "Location: " + lastClip['Location'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                    )
+            else:
+                parentPage.children.add_new(
+                    TextBlock,
+                    title = "Page: " + lastClip['Page'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                )
+            parentPage.children.add_new(
+                QuoteBlock,
+                title = lastClip['Clipping']
+            )
+            row.highlights +=1
+            row.last_highlighted = NotionDate(lastClip['Date Added'])
+            row.last_synced = NotionDate(datetime.now())
 
 client = NotionClient(token_v2= NOTION_TOKEN)
 cv = client.get_collection_view(NOTION_TABLE_ID)
@@ -220,4 +240,3 @@ allRows = cv.collection.get_rows()
 print(cv.parent.views)
 
 ch = KindleClippings(CLIPPINGS_FILE)
-# ch._getClipping()
