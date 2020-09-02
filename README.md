@@ -48,7 +48,7 @@ To get a local copy up and running follow these simple steps.
 
 ### Prerequisites
 
-* A Pocket account to retreive your saved content from.
+* A Kindle device.
 * A Notion account to store your links.
 * Python 3 on your system to run the code.
 
@@ -77,7 +77,7 @@ To get a local copy up and running follow these simple steps.
    ```sh
    python kindle2notion.py
    ```
-
+[**Note:** This code was tested on a Kindle Paperwhite.]
 
 
 <!-- ROADMAP -->
