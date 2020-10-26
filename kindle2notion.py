@@ -24,7 +24,7 @@ class KindleClippings(object):
             if '- Your Highlight at location ' in eachClipping:
                 eachClipping = eachClipping.strip().split("\n")
                 title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, author = title_author.split('|')
+                title, *author = title_author.split('|')
                 title = title.strip()
                 location, addedOn = eachClipping[1].strip().split('|')
                 location = location.replace('- Your Highlight at location ', '').replace(' ', '')
@@ -32,7 +32,7 @@ class KindleClippings(object):
                 clipping = eachClipping[3]
                 lastClip = {
                     'Title': title,
-                    'Author': author,
+                    'Author': ",".join(author),
                     'Page': None,
                     'Location': location,
                     'Date Added': dateAdded,
