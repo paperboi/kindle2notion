@@ -26,7 +26,7 @@ class KindleClippings(object):
         for eachClipping in allClippings:
             eachClipping = eachClipping.strip().split("\n")
             
-            # Sometimes a null text can be selected as clipping. So check the array size;
+            # Sometimes a null text or a bookmark can be selected as clipping. So check the array size;
             if len(eachClipping) >= 3:
                 firstLine = eachClipping[0]
                 secondLine = eachClipping[1] # Second line after = marks, for identifying type
@@ -93,7 +93,7 @@ class KindleClippings(object):
                     print(self._getClipping())
                 
                 clipCollection.append(lastClip)
-                # self.addToNotion(lastClip)
+                self.addToNotion(lastClip)
                 counter += 1
 
             else:
