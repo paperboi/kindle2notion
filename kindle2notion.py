@@ -19,14 +19,19 @@ class KindleClippings(object):
 
     def _parseClippings(self, allClippings):
         allClippings = allClippings.split("==========")
+        total = len(allClippings)
+        print("Found", total, "notes and highlights" )
+        counter = 1
         clipCollection = []
         for eachClipping in allClippings:
             eachClipping = eachClipping.strip().split("\n")
             
             # Sometimes a null text can be selected as clipping. So check the array size;
             if len(eachClipping) >= 3:
-                
+                firstLine = eachClipping[0]
                 secondLine = eachClipping[1] # Second line after = marks, for identifying type
+
+                print("Processing note/highlight number", counter, "/", total, "from", firstLine)
 
                 # TODO: Author name can be stated like "Voltaire (francois Marie Arouet)" So author name should be extracted with Regex.
                 title_author = eachClipping[0].replace('(', '|').replace(')', '')
@@ -58,7 +63,6 @@ class KindleClippings(object):
             
                 # TODO: This conditions also can be reduced. New logic can check "Your X at/on location/page" and change it dynamically
                 if '- Your Highlight at location ' in secondLine:
-                    print(lastClip)
                     location = pageOrAndLoc.replace('- Your Highlight at location ', '').replace(' ', '')
                     lastClip["Location"] = location
 
@@ -89,9 +93,13 @@ class KindleClippings(object):
                     print(self._getClipping())
                 
                 clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+                # self.addToNotion(lastClip)
+                counter += 1
 
             else:
+                # TODO: Bookmarks can be added to the service also ??
+                print("Skipping bookmark number:", counter, "Because it's empty.")
+                counter += 1
                 continue
 
         return clipCollection
