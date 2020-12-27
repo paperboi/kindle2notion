@@ -184,9 +184,9 @@ class KindleClippings(object):
             row.last_highlighted = NotionDate(lastClip['Date Added'])
             row.last_synced = NotionDate(datetime.now())
 
-# client = NotionClient(token_v2= NOTION_TOKEN)
-# cv = client.get_collection_view(NOTION_TABLE_ID)
-# allRows = cv.collection.get_rows()
-# print(cv.parent.views)
+client = NotionClient(token_v2= NOTION_TOKEN)
+cv = client.get_collection_view(NOTION_TABLE_ID)
+allRows = cv.collection.get_rows()
+print(cv.parent.views)
 
 ch = KindleClippings(CLIPPINGS_FILE)
