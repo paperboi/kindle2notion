@@ -21,129 +21,120 @@ class KindleClippings(object):
         allClippings = allClippings.split("==========")
         clipCollection = []
         for eachClipping in allClippings:
-            if '- Your Highlight at location ' in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, *author = title_author.split('|')
-                title = title.strip()
-                location, addedOn = eachClipping[1].strip().split('|')
-                location = location.replace('- Your Highlight at location ', '').replace(' ', '')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': ",".join(author),
-                    'Page': None,
-                    'Location': location,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+            eachClipping = eachClipping.strip().split("\n")
+            
+            # TODO: Author name can be stated like "Voltaire (francois Marie Arouet)" So author name should be extracted with Regex.
+            title_author = eachClipping[0].replace('(', '|').replace(')', '')
+            
+            # Converted author datatype from string to array for all type of notes. If author is single it'll be converted to string without comma
+            title, *author = title_author.split('|')
+            title = title.strip()
+            
+            # Sometimes a null text can be selected as clipping. So check the array size;
+            if len(eachClipping) >= 3:
+                if '- Your Highlight at location ' in eachClipping[1]:
+                    location, addedOn = eachClipping[1].strip().split('|')
+                    location = location.replace('- Your Highlight at location ', '').replace(' ', '')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': None,
+                        'Location': location,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
 
-            elif '- Your Note on location ' in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, author = title_author.split('|')
-                title = title.strip()
-                location, addedOn = eachClipping[1].strip().split('|')
-                location = location.replace('- Your Note on location ', '').replace(' ', '')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': author,
-                    'Page': None,
-                    'Location': location,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+                elif '- Your Note on location ' in eachClipping[1]:
+                    location, addedOn = eachClipping[1].strip().split('|')
+                    location = location.replace('- Your Note on location ', '').replace(' ', '')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': None,
+                        'Location': location,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                        
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
 
-            elif '- Your Highlight on page ' in eachClipping and 'location ' in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, author = title_author.split('|')
-                title = title.strip()
-                page, location, addedOn = eachClipping[1].strip().split('|')
-                page = page.replace('- Your Highlight on page ', '').replace(' ', '')
-                location = location.replace(' location ', '').replace(' ','')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': author,
-                    'Page': page,
-                    'Location': location,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+                elif '- Your Highlight on page ' in eachClipping[1] and 'location ' in eachClipping[1]:
+                    page, location, addedOn = eachClipping[1].strip().split('|')
+                    page = page.replace('- Your Highlight on page ', '').replace(' ', '')
+                    location = location.replace(' location ', '').replace(' ','')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': page,
+                        'Location': location,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
 
-            elif '- Your Note on page ' in eachClipping and 'location ' in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, author = title_author.split('|')
-                title = title.strip()
-                page, location, addedOn = eachClipping[1].strip().split('|')
-                page = page.replace('- Your Note on page ', '').replace(' ', '')
-                location = location.replace(' location ', '').replace(' ','')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': author,
-                    'Page': page,
-                    'Location': location,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+                elif '- Your Note on page ' in eachClipping[1] and 'location ' in eachClipping[1]:
+                    page, location, addedOn = eachClipping[1].strip().split('|')
+                    page = page.replace('- Your Note on page ', '').replace(' ', '')
+                    location = location.replace(' location ', '').replace(' ','')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': page,
+                        'Location': location,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
 
-            elif '- Your Highlight on page ' in eachClipping and 'location ' not in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title = eachClipping[0]
-                title = title.strip()
-                page, addedOn = eachClipping[1].strip().split('|')
-                page = page.replace('- Your Highlight on page ', '').replace(' ', '')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': author,
-                    'Page': page,
-                    'Location': None,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
+                elif '- Your Highlight on page ' in eachClipping[1] and 'location ' not in eachClipping[1]:
+                    page, addedOn = eachClipping[1].strip().split('|')
+                    page = page.replace('- Your Highlight on page ', '').replace(' ', '')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': page,
+                        'Location': None,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
 
-            elif '- Your Note on page ' in eachClipping and 'location ' not in eachClipping:
-                eachClipping = eachClipping.strip().split("\n")
-                title = eachClipping[0]
-                title = title.strip()
-                page, addedOn = eachClipping[1].strip().split('|')
-                page = page.replace('- Your Note on page ', '').replace(' ', '')
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
-                clipping = eachClipping[3]
-                lastClip = {
-                    'Title': title,
-                    'Author': author,
-                    'Page': page,
-                    'Location': None,
-                    'Date Added': dateAdded,
-                    'Clipping': clipping
-                    }
-                clipCollection.append(lastClip)
-                self.addToNotion(lastClip)
-                print(self._getClipping())
+                elif '- Your Note on page ' in eachClipping[1] and 'location ' not in eachClipping[1]:
+                    page, addedOn = eachClipping[1].strip().split('|')
+                    page = page.replace('- Your Note on page ', '').replace(' ', '')
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                    clipping = eachClipping[3]
+                    lastClip = {
+                        'Title': title,
+                        'Author': ",".join(author),
+                        'Page': page,
+                        'Location': None,
+                        'Date Added': dateAdded,
+                        'Clipping': clipping
+                        }
+                    clipCollection.append(lastClip)
+                    self.addToNotion(lastClip)
+                    print(self._getClipping())
 
             else:
                 continue
+
         return clipCollection
 
     def _getClipping(self):
