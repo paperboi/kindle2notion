@@ -7,6 +7,7 @@ import string
 import os
 import unicodedata
 from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID
+from utilities import getBookCoverUri, no_cover_img
 
 class KindleClippings(object):
     def __init__(self, clippingsFile):
@@ -192,9 +193,30 @@ class KindleClippings(object):
             row.last_highlighted = NotionDate(lastClip['Date Added'])
             row.last_synced = NotionDate(datetime.now())
 
+def generateBookCovers(cv):
+    all_rows = cv.collection.get_rows()
+    coverCount = len(all_rows)
+    coverCounter = 1
+    print("Generating book covers...")
+    for record in all_rows: 
+        if record.cover == None:
+            result = getBookCoverUri(record.title, record.author)
+            if result != None:
+                record.cover = result
+                print("✓ Book Cover", coverCounter, "/", coverCount, " has been sent, for", record.title)
+            else:
+                record.cover = no_cover_img
+                print("× Book Cover", coverCounter, "/", coverCount, " coulnd't be found. Please replace the placeholder imge with original bookcover manually for", record.title)
+        else:
+            print("~ Book Cover", coverCounter, "/", coverCount, " is already existing, for", record.title)
+        coverCounter += 1
+
+
 client = NotionClient(token_v2= NOTION_TOKEN)
 cv = client.get_collection_view(NOTION_TABLE_ID)
 allRows = cv.collection.get_rows()
 print(cv.parent.views)
-
 ch = KindleClippings(CLIPPINGS_FILE)
+
+# This should be called after upload. And this cover generator can be called separately.
+generateBookCovers(cv)
