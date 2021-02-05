@@ -8,6 +8,12 @@ import os
 import unicodedata
 from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID
 
+models = ["Other", "Kindle Touch" ]
+for i in range(0, len(models)):
+    print(i,': ', models[i])
+device = int(input("select device: "))
+
+
 class KindleClippings(object):
     def __init__(self, clippingsFile):
         self.clippings = self._getAllClippings(clippingsFile)
@@ -49,7 +55,10 @@ class KindleClippings(object):
                 pageOrAndLoc, *optLocAndDate = secondLine.strip().split('|')
 
                 addedOn = optLocAndDate[-1]
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                if (device == 1):
+                    dateAdded = datetime.strptime(addedOn, " Added on %A, %B %d, %Y %X %p")
+                else:
+                    dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
                 clipping = eachClipping[3]
 
                 lastClip = {
@@ -182,7 +191,7 @@ class KindleClippings(object):
             else:
                 parentPage.children.add_new(
                     TextBlock,
-                    title = "Page: " + lastClip['Page'] + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
+                    title = "Page: " + str(lastClip['Page']) + "\tDate Added: " +  str(lastClip['Date Added'].strftime("%A, %d %B %Y %I:%M:%S %p"))
                 )
             parentPage.children.add_new(
                 QuoteBlock,
