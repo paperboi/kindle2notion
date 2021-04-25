@@ -1,3 +1,4 @@
 ﻿DateTime==4.3
 notion==0.0.27
 python-decouple==3.3
+requests>=2.25.0
