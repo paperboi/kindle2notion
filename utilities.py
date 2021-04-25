@@ -1,5 +1,6 @@
 from requests import get
 
+# Get Cover Image
 no_cover_img = "https://via.placeholder.com/150x200?text=No%20Cover"
 
 def getBookCoverUri(title, author):
@@ -17,3 +18,7 @@ def getBookCoverUri(title, author):
         return response[0].get("volumeInfo", {}).get("imageLinks", {}).get("thumbnail")
     
     return
+
+# Initializing Special chars
+BOLD = "__"
+ITALIC = "*"

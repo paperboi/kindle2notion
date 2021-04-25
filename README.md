@@ -35,9 +35,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-A Python script to export all the clippings from your Kindle device to a page in Notion. Run this script whenever you plug in your Kindle device to your PC. The underlying idea behind this idea is to marry the solitary reading experience of a Kindle with the note-taking capabilities of a cloud-based service like Notion.
+A Python script to export all the clippings from your Kindle device to a page in Notion. Run this script whenever you plug in your Kindle device to your PC. The underlying idea behind this code is to marry the solitary reading experience of a Kindle with the note-taking capabilities of a cloud-based service like Notion.
 
-A key inspiration behind this project was the notes saving feature on Google Play Books, which automatically syncs all your highlights from a book hosted on the service to a Google Doc in real time. I wanted a similar feature for my Kindle which unfortunately shows very narrow notetaking capabilities and a slow keyboard input. This project is one step towards a solution for this problem.
+A key inspiration behind this project was the notes saving feature on Google Play Books, which automatically syncs all your highlights from a book hosted on the service to a Google Doc in real time. I wanted a similar feature for my Kindle and this project is one step towards a solution for this problem.
 
 **Intended for**
 - Avid readers who would want to browse through their prior reads and highlights anytime anywhere.
