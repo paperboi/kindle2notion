@@ -175,42 +175,6 @@ class KindleClippings(object):
         message = str(diffCount) + " notes / highlights added successfully\n"
         return (message)
 
-
-# def generateBookCovers(cv):
-
-#     all_rows = cv.collection.get_rows()
-
-#     coverCount = len(all_rows)
-
-#     coverCounter = 1
-
-#     print("Generating book covers...")
-
-#     for record in all_rows: 
-
-#         if record.cover == None:
-
-#             result = getBookCoverUri(record.title, record.author)
-
-#             if result != None:
-
-#                 record.cover = result
-
-#                 print("✓ Book Cover", coverCounter, "/", coverCount, " has been sent, for", record.title)
-
-#             else:
-
-#                 record.cover = no_cover_img
-
-#                 print("× Book Cover", coverCounter, "/", coverCount, " coulnd't be found. Please replace the placeholder imge with original bookcover manually for", record.title)
-
-#         else:
-
-#             print("~ Book Cover", coverCounter, "/", coverCount, " is already existing, for", record.title)
-
-#         coverCounter += 1
-
-
 client = NotionClient(token_v2= NOTION_TOKEN)
 cv = client.get_collection_view(NOTION_TABLE_ID)
 allRows = cv.collection.get_rows()
