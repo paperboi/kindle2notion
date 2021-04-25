@@ -1,3 +1,4 @@
 .env
 MyClippings.txt
 __pycache__/
+.vscode/
