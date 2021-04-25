@@ -8,7 +8,7 @@ import os
 import unicodedata
 
 from utilities import getBookCoverUri, no_cover_img, BOLD, ITALIC
-from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID, ENABLE_HIGHLIGHT_DATE
+from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER
 
 
 class KindleClippings(object):
@@ -118,7 +118,7 @@ class KindleClippings(object):
                 
             message = self.addBookToNotion(bookName, author, highlightCount, d, aggregatedText)
             if message != "None to add":
-                print("✓ ", message)
+                print("✓", message)
 
         print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
 
@@ -151,15 +151,15 @@ class KindleClippings(object):
             row.author = author
             row.highlights = 0
 
-            #def addBookCover 
-            if row.cover == None:
-                result = getBookCoverUri(row.title, row.author)
-            if result != None:
-                row.cover = result
-                print("✓ Added book cover")
-            else:
-                row.cover = no_cover_img
-                print("× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
+            if ENABLE_BOOK_COVER == True: 
+                if row.cover == None:
+                    result = getBookCoverUri(row.title, row.author)
+                if result != None:
+                    row.cover = result
+                    print("✓ Added book cover")
+                else:
+                    row.cover = no_cover_img
+                    print("× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
 
         parentPage = client.get_block(row.id)
 
