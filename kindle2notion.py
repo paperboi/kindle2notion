@@ -143,15 +143,16 @@ class KindleClippings(object):
                         newHighlights = False
                         return ("None to add")
         
-        print(bookName + " (" + author + ")")
-        print("-" * len(bookName + " (" + author + ")"))
+        header = bookName + " (" + author + ")"
+        print(header)
+        print("-" * len(header))
         if not titleExists:
             row = cv.collection.add_row()
             row.title = bookName
             row.author = author
             row.highlights = 0
 
-            if ENABLE_BOOK_COVER == True: 
+            if ENABLE_BOOK_COVER: 
                 if row.cover == None:
                     result = getBookCoverUri(row.title, row.author)
                 if result != None:
