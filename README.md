@@ -1,7 +1,10 @@
 
 <!-- PROJECT OVERVIEW -->
 <br />
-  <h1 align="center">Kindle2Notion</h1>
+  <p align="center">
+    <img width="500" height="281" src="k2n.jpg">
+  </p>
+  <!-- <h1 align="center">Kindle2Notion</h1> -->
   <p align="center">
     A program to copy all your Kindle highlights and notes to a page in Notion. 
     <br />
@@ -111,6 +114,6 @@ Distributed under the MIT License. See [LICENSE](https://github.com/paperboi/Kin
 <!-- CONTACT -->
 ## Contact
 
-Jeffrey Jacob - [@DullBlackWall](https://twitter.com/DullBlackWall) - [Email](mailto:jeffreysamjacob@gmail.com)
+Jeffrey Jacob - [@jeffreysamjacob](https://twitter.com/jeffreysamjacob) - [Email](mailto:jeffreysamjacob@gmail.com)
 
 Project Link: [https://github.com/paperboi/Kindle2Notion](https://github.com/paperboi/Kindle2Notion)
