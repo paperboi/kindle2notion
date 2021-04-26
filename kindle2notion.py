@@ -35,8 +35,6 @@ class KindleClippings(object):
 
             # Sometimes a null text or a bookmark can be selected as clipping. So check the array size;
             if len(eachClipping) >= 3:
-                secondLine = eachClipping[1] # Second line after ===== marks, for identifying type
-
                 # To-do: Author name can be stated like "Voltaire (francois Marie Arouet)" So author name should be extracted with Regex.
                 title_author = eachClipping[0].replace('(', '|').replace(')', '')
                 title, *author = title_author.split('|') # supports single authors also
@@ -53,34 +51,19 @@ class KindleClippings(object):
                 # 1. pageOrAndLoc: page or and location: page or location & page and location can return
                 # 2. optLocAndDate: Optionally Location can return and date can return or only date can return as array
 
+                secondLine = eachClipping[1] # Second line after ===== marks, for identifying type
                 pageOrAndLoc, *optLocAndDate = secondLine.strip().split('|')
+
                 addedOn = optLocAndDate[-1]
                 dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
                 clipping = eachClipping[3]
                 page = None
                 location = None
 
-                # To-do: These conditions can be reduced to a single Regex
-
-                if '- Your Highlight at location ' in secondLine:
-                    location = pageOrAndLoc.replace('- Your Highlight at location ', '').replace(' ', '')
-
-                elif '- Your Note on location ' in secondLine:
-                    location = pageOrAndLoc.replace('- Your Note on location ', '').replace(' ', '')
-
-                elif '- Your Highlight on page ' in secondLine and 'location ' in secondLine:
-                    page = pageOrAndLoc.replace('- Your Highlight on page ', '').replace(' ', '')
-                    location = optLocAndDate[0].replace(' location ', '').replace(' ','')
-
-                elif '- Your Note on page ' in secondLine and 'location ' in secondLine:
-                    page = pageOrAndLoc.replace('- Your Note on page ', '').replace(' ', '')
-                    location = optLocAndDate[0].replace(' location ', '').replace(' ','')
-
-                elif '- Your Highlight on page ' in secondLine and 'location ' not in secondLine:
-                    page = pageOrAndLoc.replace('- Your Highlight on page ', '').replace(' ', '')
-
-                elif '- Your Note on page ' in secondLine and 'location ' not in secondLine:
-                    page = pageOrAndLoc.replace('- Your Note on page ', '').replace(' ', '')
+                page = pageOrAndLoc[pageOrAndLoc.find('page'):]
+                page = page.replace('page','').strip()
+                location = pageOrAndLoc[pageOrAndLoc.find('location'):]
+                location = location.replace('location','').strip()
 
                 books[title]["highlights"].append((clipping, page, location, dateAdded))
 
@@ -106,10 +89,10 @@ class KindleClippings(object):
                 d = highlight[3] # date
 
                 aggregatedText += BOLD + c + BOLD + "\n"
-                if p != None:
+                if p != '':
                     aggregatedText += ITALIC + "Page: " + p + ITALIC + "\t"
 
-                if l != None:
+                if l != '':
                     aggregatedText += ITALIC + "Location: " + l + ITALIC + "\t"
 
                 if ENABLE_HIGHLIGHT_DATE:
@@ -143,9 +126,9 @@ class KindleClippings(object):
                         newHighlights = False
                         return ("None to add")
         
-        header = bookName + " (" + author + ")"
-        print(header)
-        print("-" * len(header))
+        title_author = bookName + " (" + author + ")"
+        print(title_author)
+        print("-" * len(title_author))
         if not titleExists:
             row = cv.collection.add_row()
             row.title = bookName
