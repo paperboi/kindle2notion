@@ -1,7 +1,7 @@
 from requests import get
 
 # Get Cover Image
-no_cover_img = "https://via.placeholder.com/150x200?text=No%20Cover"
+NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 
 def getBookCoverUri(title, author):
     req_uri = "https://www.googleapis.com/books/v1/volumes?q="

@@ -3,11 +3,12 @@ from notion.collection import NotionDate
 from notion.block import QuoteBlock, TextBlock, PageBlock
 
 from datetime import datetime
+from dateparser import parse
 import string
 import os
 import unicodedata
 
-from utilities import getBookCoverUri, no_cover_img, BOLD, ITALIC
+from utilities import getBookCoverUri, NO_COVER_IMG, BOLD, ITALIC
 from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER
 
 
@@ -52,18 +53,23 @@ class KindleClippings(object):
                 # 2. optLocAndDate: Optionally Location can return and date can return or only date can return as array
 
                 secondLine = eachClipping[1] # Second line after ===== marks, for identifying type
-                pageOrAndLoc, *optLocAndDate = secondLine.strip().split('|')
+                pageOrAndLoc, *optLocAndDate = secondLine.strip().split(' | ')
+                dateAdded = ''
 
-                addedOn = optLocAndDate[-1]
-                dateAdded = datetime.strptime(addedOn, ' Added on %A, %d %B %Y %X')
+                # Extract Added On data from optLocAndDate
+                if ENABLE_HIGHLIGHT_DATE:
+                    addedOn = optLocAndDate[-1]
+                    dateAdded = parse(addedOn[addedOn.find('Added on'):].replace('Added on','').strip())
+
+               # Extract the actual clipping to this var
                 clipping = eachClipping[3]
-                page = None
-                location = None
 
-                page = pageOrAndLoc[pageOrAndLoc.find('page'):]
-                page = page.replace('page','').strip()
-                location = pageOrAndLoc[pageOrAndLoc.find('location'):]
-                location = location.replace('location','').strip()
+               # Extract page and location data from pageOrAndLoc
+                page = ''
+                location = ''
+
+                page = pageOrAndLoc[pageOrAndLoc.find('page'):].replace('page','').strip()
+                location = pageOrAndLoc[pageOrAndLoc.find('location'):].replace('location','').strip()
 
                 books[title]["highlights"].append((clipping, page, location, dateAdded))
 
@@ -142,7 +148,7 @@ class KindleClippings(object):
                     row.cover = result
                     print("✓ Added book cover")
                 else:
-                    row.cover = no_cover_img
+                    row.cover = NO_COVER_IMG
                     print("× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
 
         parentPage = client.get_block(row.id)
