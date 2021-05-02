@@ -5,6 +5,7 @@ from notion.block import QuoteBlock, TextBlock, PageBlock
 from datetime import datetime
 from dateparser import parse
 import string
+import errno
 import os
 import unicodedata
 
@@ -37,8 +38,8 @@ class KindleClippings(object):
             # Sometimes a null text or a bookmark can be selected as clipping. So check the array size;
             if len(eachClipping) >= 3:
                 # To-do: Author name can be stated like "Voltaire (francois Marie Arouet)" So author name should be extracted with Regex.
-                title_author = eachClipping[0].replace('(', '|').replace(')', '')
-                title, *author = title_author.split('|') # supports single authors also
+                titleAndAuthor = eachClipping[0].replace('(', '|').replace(')', '')
+                title, *author = titleAndAuthor.split('|') # supports single authors also
                 title = title.strip()
 
                 # Edit book to the books dictionary
@@ -111,9 +112,6 @@ class KindleClippings(object):
 
         print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
 
-    def _getClipping(self):
-        for i in self.clippings:
-            yield i
 
     def addBookToNotion(self, bookName, author, highlightCount, lastNoteDate, aggregatedText):
         titleExists = False
@@ -132,16 +130,17 @@ class KindleClippings(object):
                         newHighlights = False
                         return ("None to add")
         
-        title_author = bookName + " (" + author + ")"
-        print(title_author)
-        print("-" * len(title_author))
+        titleAndAuthor = bookName + " (" + author + ")"
+        print(titleAndAuthor)
+        print("-" * len(titleAndAuthor))
         if not titleExists:
             row = cv.collection.add_row()
             row.title = bookName
             row.author = author
             row.highlights = 0
 
-            if ENABLE_BOOK_COVER: 
+            if ENABLE_BOOK_COVER:
+                # addBookCover(row)
                 if row.cover == None:
                     result = getBookCoverUri(row.title, row.author)
                 if result != None:
@@ -152,7 +151,6 @@ class KindleClippings(object):
                     print("× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
 
         parentPage = client.get_block(row.id)
-
 
         # For existing books with new highlights to add
         for allBlocks in parentPage.children:
@@ -165,12 +163,17 @@ class KindleClippings(object):
         message = str(diffCount) + " notes / highlights added successfully\n"
         return (message)
 
-client = NotionClient(token_v2= NOTION_TOKEN)
-cv = client.get_collection_view(NOTION_TABLE_ID)
-allRows = cv.collection.get_rows()
-print(cv.parent.views)
+if os.path.isfile(CLIPPINGS_FILE):
+    client = NotionClient(token_v2= NOTION_TOKEN)
+    cv = client.get_collection_view(NOTION_TABLE_ID)
+    allRows = cv.collection.get_rows()
+    print(cv.parent.views)
 
-if len(cv.parent.views) > 0:
-    print("Notion page is found. Analyzing clippings file...\n")
+    if len(cv.parent.views) > 0:
+        print("Notion page is found. Analyzing clippings file...\n")
 
-ch = KindleClippings(CLIPPINGS_FILE)
+    ch = KindleClippings(CLIPPINGS_FILE)
+else:
+    print(
+        FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), CLIPPINGS_FILE)
+        )
