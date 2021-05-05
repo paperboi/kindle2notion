@@ -8,7 +8,7 @@ import errno
 import os
 import unicodedata
 
-from utilities import getBookCoverURL, NO_COVER_IMG, BOLD, ITALIC
+from utilities import getBookCoverURI, NO_COVER_IMG, BOLD, ITALIC
 from settings import CLIPPINGS_FILE, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, client, cv, allRows
 
 
@@ -137,7 +137,7 @@ class KindleClippings(object):
 
             if ENABLE_BOOK_COVER:
                 if row.cover == None:
-                    result = getBookCoverUri(row.title, row.author)
+                    result = getBookCoverURI(row.title, row.author)
                 if result != None:
                     row.cover = result
                     print("✓ Added book cover")
