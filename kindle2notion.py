@@ -1,6 +1,5 @@
-from notion.client import NotionClient
 from notion.collection import NotionDate
-from notion.block import QuoteBlock, TextBlock, PageBlock
+from notion.block import TextBlock
 
 from datetime import datetime
 from dateparser import parse
@@ -9,8 +8,8 @@ import errno
 import os
 import unicodedata
 
-from utilities import getBookCoverUri, NO_COVER_IMG, BOLD, ITALIC
-from settings import CLIPPINGS_FILE, NOTION_TOKEN, NOTION_TABLE_ID, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER
+from utilities import getBookCoverURL, NO_COVER_IMG, BOLD, ITALIC
+from settings import CLIPPINGS_FILE, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, client, cv, allRows
 
 
 class KindleClippings(object):
@@ -78,7 +77,7 @@ class KindleClippings(object):
                 # print(eachClipping) # Activate this line for debugging bookmarks or unsupported clippings. 
                 passedClippingCount += 1
 
-        print("Initiating tranfer...\n")
+        print("Initiating transfer...\n")
 
         for bookName in books:
             book = books[bookName]
@@ -110,14 +109,11 @@ class KindleClippings(object):
             if message != "None to add":
                 print("✓", message)
 
-        print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
+        # print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
 
 
     def addBookToNotion(self, bookName, author, highlightCount, lastNoteDate, aggregatedText):
         titleExists = False
-        newHighlights = True
-
-        global cv, allRows
 
         if allRows != []:
             for eachRow in allRows:
@@ -127,12 +123,12 @@ class KindleClippings(object):
 
                     if row.highlights == None: row.highlights = 0 # to initialize number of highlights as 0
                     elif row.highlights == highlightCount: # if no change in highlights
-                        newHighlights = False
                         return ("None to add")
         
         titleAndAuthor = bookName + " (" + author + ")"
         print(titleAndAuthor)
         print("-" * len(titleAndAuthor))
+ 
         if not titleExists:
             row = cv.collection.add_row()
             row.title = bookName
@@ -140,7 +136,6 @@ class KindleClippings(object):
             row.highlights = 0
 
             if ENABLE_BOOK_COVER:
-                # addBookCover(row)
                 if row.cover == None:
                     result = getBookCoverUri(row.title, row.author)
                 if result != None:
@@ -163,17 +158,18 @@ class KindleClippings(object):
         message = str(diffCount) + " notes / highlights added successfully\n"
         return (message)
 
-if os.path.isfile(CLIPPINGS_FILE):
-    client = NotionClient(token_v2= NOTION_TOKEN)
-    cv = client.get_collection_view(NOTION_TABLE_ID)
-    allRows = cv.collection.get_rows()
-    print(cv.parent.views)
+def main():
+    try:
+        # print(cv.parent.views)
+        if len(cv.parent.views) > 0:
+            print("Notion page is found. Analyzing clippings file...\n")
 
-    if len(cv.parent.views) > 0:
-        print("Notion page is found. Analyzing clippings file...\n")
+        ch = KindleClippings(CLIPPINGS_FILE)
+        print("Transfer complete...\nExiting script...")
+    except Exception as e:
+        print(str(e))
+        print("Exiting script...")
+        os.system('pause')
 
-    ch = KindleClippings(CLIPPINGS_FILE)
-else:
-    print(
-        FileNotFoundError(errno.ENOENT, os.strerror(errno.ENOENT), CLIPPINGS_FILE)
-        )
+if __name__ == '__main__':
+    main()
