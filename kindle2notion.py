@@ -101,7 +101,7 @@ class KindleClippings(object):
                 l = highlight[2]  # location
                 d = highlight[3]  # date
 
-                aggregatedText += c + "\n"
+                aggregatedText += c + "\n("
                 if p != '':
                     aggregatedText += ITALIC + "Page: " + p + ITALIC + "\t"
 
@@ -111,7 +111,7 @@ class KindleClippings(object):
                 if ENABLE_HIGHLIGHT_DATE and (d is not None and d != ''):
                     aggregatedText += ITALIC + "Date Added: " + \
                         str(d.strftime("%A, %d %B %Y %I:%M:%S %p")) + ITALIC
-                aggregatedText += "\n\n"
+                aggregatedText = aggregatedText.strip() + ")\n\n"
 
             message = self.addBookToNotion(
                 bookName, author, highlightCount, d, aggregatedText)
