@@ -101,7 +101,7 @@ class KindleClippings(object):
                 l = highlight[2]  # location
                 d = highlight[3]  # date
 
-                aggregatedText += BOLD + c + BOLD + "\n"
+                aggregatedText += c + "\n"
                 if p != '':
                     aggregatedText += ITALIC + "Page: " + p + ITALIC + "\t"
 
