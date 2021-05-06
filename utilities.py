@@ -3,17 +3,17 @@ from requests import get
 # Get Cover Image
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 
-def getBookCoverUri(title, author):
-    req_uri = "https://www.googleapis.com/books/v1/volumes?q="
+def getBookCoverURI(title, author):
+    req_URI = "https://www.googleapis.com/books/v1/volumes?q="
     
     if title == None: return
     
-    req_uri += "intitle:" + title
+    req_URI += "intitle:" + title
     
     if author != None:
-        req_uri += "+inauthor:" + author
+        req_URI += "+inauthor:" + author
 
-    response = get(req_uri).json().get("items", [])
+    response = get(req_URI).json().get("items", [])
     if len(response) > 0:
         return response[0].get("volumeInfo", {}).get("imageLinks", {}).get("thumbnail")
     
