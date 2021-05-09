@@ -1,17 +1,21 @@
 
 <!-- PROJECT OVERVIEW -->
-<br />
-  <p align="center">
-    <img width="500" height="281" src="k2n.jpg">
-  </p>
-  <!-- <h1 align="center">Kindle2Notion</h1> -->
-  <p align="center">
-    A program to copy all your Kindle highlights and notes to a page in Notion. 
-    <br />
-    <a href="https://github.com/paperboi/Kindle2Notion">Explore the docs</a>
-    ·
-    <a href="https://github.com/paperboi/Kindle2Notion/issues">File issues and feature requests here</a>
-  </p>
+<p align="center">
+  <img width="500" height="281" src="k2n.jpg">
+</p>
+<!-- <h1 align="center">Kindle2Notion</h1> -->
+<p align="center">
+  A program to copy all your Kindle highlights and notes to a page in Notion. 
+  <br />
+  <a href="https://github.com/paperboi/Kindle2Notion">Explore the docs</a>
+  ·
+  <a href="https://github.com/paperboi/Kindle2Notion/issues">File issues and feature requests here</a>
+</p>
+<p align -"center>
+  If you found this script helpful or appreciate my work, you can support me here:
+</p>
+<p align="center">
+  <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 150px !important;" ></a>
 </p>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -20,6 +24,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+<!-- ![Buy Me A Coffee][bmac][bmac-url] -->
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -142,3 +147,5 @@ Project Link: [https://github.com/paperboi/Kindle2Notion](https://github.com/pap
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jeffreysamjacob/
 [product-demo]: demo.gif
+[bmac]: bmac.png
+[bmac-url]: https://www.buymeacoffee.com/jeffreyjacob
