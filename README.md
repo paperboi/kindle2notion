@@ -15,7 +15,7 @@
   If you found this script helpful or appreciate my work, you can support me here:
 </p>
 <p align="center">
-  <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 20px !important;width: 70px !important;" ></a>
+  <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 20px;width: 70px;" ></a>
 </p>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -24,7 +24,6 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-<!-- ![Buy Me A Coffee][bmac][bmac-url] -->
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -128,9 +127,10 @@ Distributed under the MIT License. See [LICENSE][license-url] for more informati
 <!-- CONTACT -->
 ## Contact
 
-Jeffrey Jacob - [@jeffreysamjacob](https://twitter.com/jeffreysamjacob) - [Email](mailto:jeffreysamjacob@gmail.com)
-
-Project Link: [https://github.com/paperboi/Kindle2Notion](https://github.com/paperboi/Kindle2Notion)
+Jeffrey Jacob
+- [Twitter](https://twitter.com/jeffreysamjacob)
+- [Email](mailto:jeffreysamjacob@gmail.com)
+- [LinkedIn](https://www.linkedin.com/in/jeffreysamjacob/)
 
 
 
