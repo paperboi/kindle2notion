@@ -6,6 +6,7 @@ from dateparser import parse
 import string
 import errno
 import os
+import re
 import unicodedata
 
 from utilities import getBookCoverURI, NO_COVER_IMG, ITALIC
@@ -13,7 +14,6 @@ from settings import CLIPPINGS_FILE, ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, c
 
 
 class KindleClippings(object):
-
     def __init__(self, clippingsFile):
         self.clippings = self._getAllClippings(clippingsFile)
 
@@ -34,17 +34,30 @@ class KindleClippings(object):
 
             # Sometimes a null text or a bookmark can be selected as clipping. So check the array size;
             if len(eachClipping) >= 3:
-                # To-do: Author name can be stated like "Voltaire (francois Marie Arouet)" So author name should be extracted with Regex.
-                titleAndAuthor = eachClipping[0].replace(
-                    '(', '|').replace(')', '')
-                # supports single authors also
-                title, *author = titleAndAuthor.split('|')
-                title = title.strip()
+                author = (re.findall(r'\(.*?\)', eachClipping[0]))[-1]
+                author = author.removeprefix('(').removesuffix(')')
+                title = eachClipping[0].replace(author,'').strip().replace(u'\ufeff', ''). replace(' ()', '')
+
+                # Use-cases that require some additional text-formatting:
+                # -------------------------------------------------------
+                # 1. If the author's name has a parentheses within it -- ex. "Voltaire (François-Marie Arouet)"
+                if '(' in author:
+                    author = author + ')'
+                    title = title.removesuffix(')')
+
+                # 2. if the author's name is listed in '(Last Name, First Name)' format (only for single authors)  -- ex. "Catch-22 (Heller, Joseph)"
+                # TO-DO: Rewrite code to ignore cases where the author's degree is mentioned along with their name -- ex. "Edward M. Hallowell, M.D."" 
+                if ', ' in author:
+                    lastName, firstName = author.split(', ')
+                    author = firstName + " " + lastName
+
+                # 3. If title of the book is listed as 'Placeholder, The' -- ex. "Mysterious Disappearance of Leon (I Mean Noel), The"
+                if ', The' in title:
+                    title = 'The ' + title.replace(', The', '')
 
                 # Edit book to the books dictionary
                 if title not in books:
-                    books[title] = {"author": ",".join(
-                        author), "highlights": []}
+                    books[title] = {"author": author, "highlights": []}
 
                 # Please regard this hack. This operation can return some pairs like (page and date), (location and date)
                 # or 3 values: (page, location, date)
@@ -61,8 +74,7 @@ class KindleClippings(object):
                 # Extract Added On data from optLocAndDate
                 if ENABLE_HIGHLIGHT_DATE:
                     addedOn = optLocAndDate[-1]
-                    dateAdded = parse(addedOn[addedOn.find(
-                        'Added on'):].replace('Added on', '').strip())
+                    dateAdded = parse(addedOn[addedOn.find('Added on'):].replace('Added on', '').strip())
 
                # Extract the actual clipping to this var
                 clipping = eachClipping[3]
@@ -71,13 +83,10 @@ class KindleClippings(object):
                 page = ''
                 location = ''
 
-                page = pageOrAndLoc[pageOrAndLoc.find(
-                    'page'):].replace('page', '').strip()
-                location = pageOrAndLoc[pageOrAndLoc.find(
-                    'location'):].replace('location', '').strip()
+                page = pageOrAndLoc[pageOrAndLoc.find('page'):].replace('page', '').strip()
+                location = pageOrAndLoc[pageOrAndLoc.find('location'):].replace('location', '').strip()
 
-                books[title]["highlights"].append(
-                    (clipping, page, location, dateAdded))
+                books[title]["highlights"].append((clipping, page, location, dateAdded))
 
             else:
                 # print(eachClipping) # Activate this line for debugging bookmarks or unsupported clippings.
@@ -85,9 +94,11 @@ class KindleClippings(object):
 
         print("Initiating transfer...\n")
 
-        for bookName in books:
-            book = books[bookName]
+        for title in books:
+            book = books[title]
+            # print(book)
             author = book["author"]
+            # print(author)
             highlightCount = len(book["highlights"])
 
             # Create single string for all of the notes
@@ -112,20 +123,19 @@ class KindleClippings(object):
                         str(d.strftime("%A, %d %B %Y %I:%M:%S %p")) + ITALIC
                 aggregatedText = aggregatedText.strip() + ")\n\n"
 
-            message = self.addBookToNotion(
-                bookName, author, highlightCount, d, aggregatedText)
+            message = self.addBookToNotion(title, author, highlightCount, aggregatedText, d)
             if message != "None to add":
                 print("✓", message)
 
-        # print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
+        print("\n× Passed", passedClippingCount, "bookmark or unsupported clippings.\n")
 
-    def addBookToNotion(self, bookName, author, highlightCount, lastNoteDate, aggregatedText):
+    def addBookToNotion(self, title, author, highlightCount, aggregatedText, lastNoteDate):
         titleExists = False
 
         if allRows != []:
             for eachRow in allRows:
                 # to account for the use-case of books with the same name by different authors
-                if bookName == eachRow.title and author == eachRow.author:
+                if title == eachRow.title and author == eachRow.author:
                     titleExists = True
                     row = eachRow
 
@@ -133,13 +143,13 @@ class KindleClippings(object):
                     elif row.highlights == highlightCount: # if no change in highlights
                         return ("None to add")
 
-        titleAndAuthor = bookName + " (" + author + ")"
+        titleAndAuthor = title + " (" + str(author) + ")"
         print(titleAndAuthor)
         print("-" * len(titleAndAuthor))
  
         if not titleExists:
             row = cv.collection.add_row()
-            row.title = bookName
+            row.title = title
             row.author = author
             row.highlights = 0
 
@@ -151,8 +161,7 @@ class KindleClippings(object):
                     print("✓ Added book cover")
                 else:
                     row.cover = NO_COVER_IMG
-                    print(
-                        "× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
+                    print("× Book cover couldn't be found. Please replace the placeholder image with the original book cover manually")
 
         parentPage = client.get_block(row.id)
 
@@ -168,13 +177,13 @@ class KindleClippings(object):
         return (message)
 
 def main():
-    try:
+    # try:
         # print(cv.parent.views)
-        if len(cv.parent.views) > 0:
-            print("Notion page is found. Analyzing clippings file...\n")
+    if len(cv.parent.views) > 0:
+        print("Notion page is found. Analyzing clippings file...\n")
 
-        ch = KindleClippings(CLIPPINGS_FILE)
-        print("Transfer complete...\nExiting script...")
+    ch = KindleClippings(CLIPPINGS_FILE)
+    print("Transfer complete...\nExiting script...")
     except Exception as e:
         print(str(e))
         print("Exiting script...")

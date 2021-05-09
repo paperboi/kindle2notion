@@ -19,6 +19,5 @@ def getBookCoverURI(title, author):
     
     return
 
-# Initializing Special chars
-BOLD = "__"
+# Initializing Special chars for text formatting
 ITALIC = "*"

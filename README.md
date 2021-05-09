@@ -82,7 +82,7 @@ To get a local copy up and running follow these simple steps.
    ```sh
    python kindle2notion.py
    ```
-[**Note:** This code was tested on a Kindle Paperwhite.]
+[**Note:** This code was tested on a 4th Gen Kindle Paperwhite.]
 
 
 <!-- ROADMAP -->
