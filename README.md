@@ -14,7 +14,12 @@
   </p>
 </p>
 
-
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
@@ -34,6 +39,8 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+
+![Kindle2Notion Demo][product-demo]
 
 A Python script to export all the clippings from your Kindle device to a page in Notion. Run this script whenever you plug in your Kindle device to your PC. The underlying idea behind this code is to marry the solitary reading experience of a Kindle with the note-taking capabilities of a cloud-based service like Notion.
 
@@ -109,7 +116,7 @@ Any contributions you make are **greatly appreciated**.
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/paperboi/Kindle2Notion/blob/master/LICENSE.md) for more information.
+Distributed under the MIT License. See [LICENSE][license-url] for more information.
 
 
 
@@ -119,3 +126,19 @@ Distributed under the MIT License. See [LICENSE](https://github.com/paperboi/Kin
 Jeffrey Jacob - [@jeffreysamjacob](https://twitter.com/jeffreysamjacob) - [Email](mailto:jeffreysamjacob@gmail.com)
 
 Project Link: [https://github.com/paperboi/Kindle2Notion](https://github.com/paperboi/Kindle2Notion)
+
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/paperboi/Kindle2Notion.svg?style=flat-square
+[contributors-url]: https://github.com/paperboi/Kindle2Notion/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/paperboi/Kindle2Notion.svg?style=flat-square
+[forks-url]: https://github.com/paperboi/Kindle2Notion/network/members
+[stars-shield]: https://img.shields.io/github/stars/paperboi/Kindle2Notion.svg?style=flat-square
+[stars-url]: https://github.com/paperboi/Kindle2Notion/stargazers
+[issues-shield]: https://img.shields.io/github/issues/paperboi/Kindle2Notion.svg?style=flat-square
+[issues-url]: https://github.com/paperboi/Kindle2Notion/issues
+[license-shield]: https://img.shields.io/github/license/paperboi/Kindle2Notion.svg?style=flat-square
+[license-url]: https://github.com/paperboi/kindle2notion/blob/master/LICENSE
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/jeffreysamjacob/
+[product-demo]: demo.gif
