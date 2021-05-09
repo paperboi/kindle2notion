@@ -177,7 +177,7 @@ class KindleClippings(object):
         return (message)
 
 def main():
-    # try:
+    try:
         # print(cv.parent.views)
     if len(cv.parent.views) > 0:
         print("Notion page is found. Analyzing clippings file...\n")
