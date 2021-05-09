@@ -178,12 +178,10 @@ class KindleClippings(object):
 
 def main():
     try:
-        # print(cv.parent.views)
-    if len(cv.parent.views) > 0:
-        print("Notion page is found. Analyzing clippings file...\n")
-
-    ch = KindleClippings(CLIPPINGS_FILE)
-    print("Transfer complete...\nExiting script...")
+        if len(cv.parent.views) > 0:
+            print("Notion page is found. Analyzing clippings file...\n")
+            ch = KindleClippings(CLIPPINGS_FILE)
+            print("Transfer complete...\nExiting script...")
     except Exception as e:
         print(str(e))
         print("Exiting script...")
