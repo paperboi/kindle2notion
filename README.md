@@ -146,6 +146,6 @@ Jeffrey Jacob
 [license-url]: https://github.com/paperboi/kindle2notion/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jeffreysamjacob/
-[product-demo]: demo.gif
+[product-demo]: https://i.imgur.com/IlDmEOy.gif
 [bmac]: bmac.png
 [bmac-url]: https://www.buymeacoffee.com/jeffreyjacob
