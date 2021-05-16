@@ -87,7 +87,7 @@ To get a local copy up and running follow these simple steps.
 3. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
    - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token.
 4. Store the path to your `MyClippings.txt` file, the address to your database and the `token_v2` value as `CLIPPINGS_FILE`, `NOTION_TABLE_ID` and `NOTION_TOKEN` respectively in a `.env` file (example provided in the repo) in the same directory you have cloned this repository to.
-   - Set `ENABLE_HIGHLIGHT_DATE` to **False**, if you don't want to see **"date added"** information.
+   - Set `ENABLE_HIGHLIGHT_DATE` to **False**, if you don't want to see **'date added'** information.
    - Set `ENABLE_BOOK_COVER` to **False**, if you don't want to store book covers to your databases.
 5. To execute the script, navigate to the directory and run
    ```sh
