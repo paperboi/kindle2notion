@@ -1,36 +1,19 @@
-from kindle2notion.exporting import prepare_notion_information_for_one_book
+from kindle2notion.exporting import prepare_aggregated_text_for_one_book
 
 
 def test_prepare_notion_information_for_one_book():
     # Given
-    books = {'What You Do Is Who You Are: How to Create Your Business Culture': {'author': 'Ben Horowitz',
-                                                                                 'highlights': [(
-                                                                                     'Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible',
-                                                                                     '11', '1', ''), (
-                                                                                     'Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible',
-                                                                                     '11', '1', '')]},
-             'Working Backwards': {'author': 'Colin Bryar', 'highlights': [(
+    highlights = [(
                  'Taking part in every aspect of the business allowed him to communicate the Amazon philosophy informally to the relatively small group of employees.',
                  '3', '3', ''), (
                  'Like all good processes, it’s simple to understand, can be easily taught to new people, does not depend on scarce resources (such as a single individual), and has a feedback loop to ensure continual improvement.',
-                 '34', '4', '')]},
-             'Clean Architecture (Robert C. Martin Series)': {'author': 'Martin Robert C.', 'highlights': [(
-                 'The first paradigm to be adopted (but not the first to be invented) was structured programming, which was discovered by Edsger Wybe Dijkstra in 1968.',
-                 '22',
-                 '2', ''),
-                 (
-                     'Structured programming imposes discipline on direct transfer of control.',
-                     '22',
-                     '2',
-                     '')]}}
-    title = 'What You Do Is Who You Are: How to Create Your Business Culture'
+                 '34', '4', '')]
 
-    expected = (
-        'Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible\n(*Page: 11*\t*Location: 1*)\n\nBecause your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible\n(*Page: 11*\t*Location: 1*)\n\n',
-        'Ben Horowitz', '', 2)
+    expected = ('Taking part in every aspect of the business allowed him to communicate the Amazon philosophy informally to the relatively small group of employees.\n(*Page: 3*	*Location: 3*)\n\n' \
+               'Like all good processes, it’s simple to understand, can be easily taught to new people, does not depend on scarce resources (such as a single individual), and has a feedback loop to ensure continual improvement.\n(*Page: 34*	*Location: 4*)\n\n', '')
 
     # When
-    actual = prepare_notion_information_for_one_book(books, title)
+    actual = prepare_aggregated_text_for_one_book(highlights)
 
     # Then
     assert expected == actual

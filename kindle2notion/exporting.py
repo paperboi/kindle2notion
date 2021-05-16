@@ -8,43 +8,39 @@ from settings import ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, client, notion_co
 from utilities import getBookCoverURI, NO_COVER_IMG, ITALIC
 
 
-def transfer_to_notion(books):
+def export_to_notion(books):
     print('Initiating transfer...\n')
     for title in books:
-        aggregated_text, author, d, highlight_count = prepare_notion_information_for_one_book(books, title)
+        book = books[title]
+        author = book['author']
+        highlights = book['highlights']
+        highlight_count = len(highlights)
+        aggregated_text_from_highlights, last_date = prepare_aggregated_text_for_one_book(highlights)
 
-        message = add_book_to_notion(title, author, highlight_count, aggregated_text, d)
+        message = add_book_to_notion(title, author, highlight_count, aggregated_text_from_highlights, last_date)
         if message != 'None to add':
             print('✓', message)
 
 
-def prepare_notion_information_for_one_book(books, title):
-    book = books[title]
-    # print(book)
-    author = book['author']
-    # print(author)
-    highlight_count = len(book['highlights'])
-    # Create single string for all of the notes
+def prepare_aggregated_text_for_one_book(highlights):
     aggregated_text = ''
-    d = ''
-    for highlight in book['highlights']:
-        c = highlight[0]  # clipping
-        p = highlight[1]  # page
-        l = highlight[2]  # location
-        d = highlight[3]  # date
+    for highlight in highlights:
+        text = highlight[0]
+        page = highlight[1]
+        location = highlight[2]
+        date = highlight[3]
 
-        aggregated_text += c + '\n('
-        if p != '':
-            aggregated_text += ITALIC + 'Page: ' + p + ITALIC + '\t'
+        aggregated_text += text + '\n('
+        if page != '':
+            aggregated_text += ITALIC + 'Page: ' + page + ITALIC + '\t'
+        if location != '':
+            aggregated_text += ITALIC + 'Location: ' + location + ITALIC + '\t'
+        if ENABLE_HIGHLIGHT_DATE and (date is not None and date != ''):
+            aggregated_text += ITALIC + 'Date Added: ' + str(date.strftime('%A, %d %B %Y %I:%M:%S %p')) + ITALIC
 
-        if l != '':
-            aggregated_text += ITALIC + 'Location: ' + l + ITALIC + '\t'
-
-        if ENABLE_HIGHLIGHT_DATE and (d is not None and d != ''):
-            aggregated_text += ITALIC + 'Date Added: ' + \
-                               str(d.strftime('%A, %d %B %Y %I:%M:%S %p')) + ITALIC
         aggregated_text = aggregated_text.strip() + ')\n\n'
-    return aggregated_text, author, d, highlight_count
+    last_date = date
+    return aggregated_text, last_date
 
 
 def add_book_to_notion(title, author, highlightCount, aggregatedText, lastNoteDate):
