@@ -74,7 +74,7 @@ To get a local copy up and running follow these simple steps.
     ```
 2. Navigate to the directory and install the pre-requisite packages using
    ```sh
-   pip install -r requirements.txt
+   pip install .
    ```
 
 
@@ -91,7 +91,7 @@ To get a local copy up and running follow these simple steps.
    - Set `ENABLE_BOOK_COVER` to **False**, if you don't want to store book covers to your databases.
 5. To execute the script, navigate to the directory and run
    ```sh
-   python kindle2notion.py
+   python kindle2notion
    ```
 [**Note:** This code was tested on a 4th Gen Kindle Paperwhite.]
 

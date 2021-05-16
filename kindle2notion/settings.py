@@ -1,9 +1,9 @@
 import sys
 
 from decouple import config
-# Store these values in an .env file in this directory (See '/.env.example').
 from notion.client import NotionClient
 
+# Store these values in an .env file in this directory (See '/.env.example').
 CLIPPINGS_FILE = config('CLIPPINGS_FILE')
 TEST_CLIPPINGS_FILE = config('TEST_CLIPPINGS_FILE')
 NOTION_TOKEN = config('NOTION_TOKEN')
