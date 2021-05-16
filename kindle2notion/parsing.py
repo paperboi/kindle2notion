@@ -2,7 +2,7 @@ import re
 
 from dateparser import parse
 
-from settings import ENABLE_HIGHLIGHT_DATE
+from kindle2notion.settings import ENABLE_HIGHLIGHT_DATE
 
 
 def parse_clippings(raw_clippings):

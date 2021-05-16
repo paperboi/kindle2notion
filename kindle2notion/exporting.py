@@ -1,15 +1,14 @@
 from datetime import datetime
 
 from notion.block import TextBlock
-from notion.client import NotionClient
 from notion.collection import NotionDate
+from requests import get
 
-from settings import ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, NOTION_TOKEN, NOTION_TABLE_ID
-from utilities import getBookCoverURI, NO_COVER_IMG, ITALIC
+from kindle2notion.settings import ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, NOTION_CLIENT, \
+    NOTION_COLLECTION_VIEW, NOTION_COLLECTION_VIEW_ROWS
 
-NOTION_CLIENT = NotionClient(token_v2=NOTION_TOKEN)
-NOTION_COLLECTION_VIEW = NOTION_CLIENT.get_collection_view(NOTION_TABLE_ID)
-NOTION_COLLECTION_VIEW_ROWS = NOTION_COLLECTION_VIEW.collection.get_rows()
+NO_COVER_IMG = 'https://via.placeholder.com/150x200?text=No%20Cover'
+ITALIC = '*'
 
 
 def export_to_notion(books):
@@ -75,7 +74,7 @@ def add_book_to_notion(title, author, highlight_count, aggregated_text, last_dat
 
         if ENABLE_BOOK_COVER:
             if row.cover == None:
-                result = getBookCoverURI(row.title, row.author)
+                result = get_book_cover_uri(row.title, row.author)
             if result != None:
                 row.cover = result
                 print('✓ Added book cover')
@@ -96,3 +95,19 @@ def add_book_to_notion(title, author, highlight_count, aggregated_text, last_dat
     row.last_synced = NotionDate(datetime.now())
     message = str(diffCount) + ' notes / highlights added successfully\n'
     return (message)
+
+
+def get_book_cover_uri(title, author):
+    reqURI = 'https://www.googleapis.com/books/v1/volumes?q='
+
+    if title == None: return
+    reqURI += 'intitle:' + title
+
+    if author != None:
+        reqURI += '+inauthor:' + author
+
+    response = get(reqURI).json().get('items', [])
+    if len(response) > 0:
+        return response[0].get('volumeInfo', {}).get('imageLinks', {}).get('thumbnail')
+
+    return

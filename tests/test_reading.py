@@ -1,5 +1,5 @@
 from kindle2notion.reading import read_raw_clippings
-from settings import TEST_CLIPPINGS_FILE
+from kindle2notion.settings import TEST_CLIPPINGS_FILE
 
 
 def test_read_raw_clippings():
