@@ -2,7 +2,7 @@ from kindle2notion.reading import read_raw_clippings
 from settings import TEST_CLIPPINGS_FILE
 
 
-def test_get_all_clippings():
+def test_read_raw_clippings():
     # Given
     with open('test_data/expected_clippings.txt', 'r') as f:
         expected = f.read()

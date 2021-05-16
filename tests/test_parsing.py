@@ -7,26 +7,16 @@ def test_parse_clippings():
     with open('test_data/expected_clippings.txt', 'r') as f:
         all_clippings = f.read()
 
-    expected = {'What You Do Is Who You Are: How to Create Your Business Culture': {'author': 'Ben Horowitz',
-                                                                                    'highlights': [(
-                                                                                        'Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible',
-                                                                                        '11', '1', ''), (
-                                                                                        'Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible',
-                                                                                        '11', '1', '')]},
-                'Working Backwards': {'author': 'Colin Bryar', 'highlights': [(
-                    'Taking part in every aspect of the business allowed him to communicate the Amazon philosophy informally to the relatively small group of employees.',
-                    '3', '3', ''), (
-                    'Like all good processes, it’s simple to understand, can be easily taught to new people, does not depend on scarce resources (such as a single individual), and has a feedback loop to ensure continual improvement.',
-                    '34', '4', '')]},
-                'Clean Architecture (Robert C. Martin Series)': {'author': 'Martin Robert C.', 'highlights': [(
-                    'The first paradigm to be adopted (but not the first to be invented) was structured programming, which was discovered by Edsger Wybe Dijkstra in 1968.',
-                    '22',
-                    '2', ''),
-                    (
-                        'Structured programming imposes discipline on direct transfer of control.',
-                        '22',
-                        '2',
-                        '')]}}
+    expected = {'Title 1: A Great Book': {'author': 'Ben Horowitz',
+                                          'highlights': [('This is test highlight 1.', '11', '1', ''),
+                                                         ('This is test highlight 2.', '11', '1', '')]},
+                'Title 2 Is Good Too': {'author': 'Colin Bryar',
+                                        'highlights': [('This is test highlight 3.', '3', '3', ''),
+                                                       ('This is test highlight 4.', '34', '4', '')]},
+                'Title 3 Is Clean (Robert C. Martin Series)': {'author': 'Martin Robert C.',
+                                                               'highlights': [
+                                                                   ('This is test highlight 5.', '22', '2', ''),
+                                                                   ('This is test highlight 6.', '22', '2', '')]}}
 
     # When
     actual = parse_clippings(all_clippings)

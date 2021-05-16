@@ -1,30 +1,30 @@
-﻿What You Do Is Who You Are: How to Create Your Business Culture (Horowitz, Ben)
+﻿Title 1: A Great Book (Horowitz, Ben)
 - Your Highlight on page 11 | Location 111-114 | Added on Tuesday, September 22, 2020 9:23:48 AM
 
-Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible
+This is test highlight 1.
 ==========
-﻿What You Do Is Who You Are: How to Create Your Business Culture (Horowitz, Ben)
+Title 1: A Great Book (Horowitz, Ben)
 - Your Highlight on page 11 | Location 111-114 | Added on Tuesday, September 22, 2020 9:24:04 AM
 
-Because your culture is how your company makes decisions when you’re not there. It’s the set of assumptions your employees use to resolve the problems they face every day. It’s how they behave when no one is looking. If you don’t methodically set your culture, then two-thirds of it will end up being accidental, and the rest will be a mistake. So how do you design and shape these nearly invisible
+This is test highlight 2.
 ==========
-Working Backwards (Bryar, Colin)
+Title 2 Is Good Too (Bryar, Colin)
 - Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM
 
-Taking part in every aspect of the business allowed him to communicate the Amazon philosophy informally to the relatively small group of employees.
+This is test highlight 3.
 ==========
-Working Backwards (Bryar, Colin)
+Title 2 Is Good Too (Bryar, Colin)
 - Your Highlight on page 34 | Location 682-684 | Added on Friday, April 30, 2021 3:14:33 PM
 
-Like all good processes, it’s simple to understand, can be easily taught to new people, does not depend on scarce resources (such as a single individual), and has a feedback loop to ensure continual improvement.
+This is test highlight 4.
 ==========
-Clean Architecture (Robert C. Martin Series) (C., Martin Robert)
+Title 3 Is Clean (Robert C. Martin Series) (C., Martin Robert)
 - Your Highlight on page 22 | Location 559-560 | Added on Saturday, May 15, 2021 10:25:42 PM
 
-The first paradigm to be adopted (but not the first to be invented) was structured programming, which was discovered by Edsger Wybe Dijkstra in 1968.
+This is test highlight 5.
 ==========
-Clean Architecture (Robert C. Martin Series) (C., Martin Robert)
+Title 3 Is Clean (Robert C. Martin Series) (C., Martin Robert)
 - Your Highlight on page 22 | Location 564-565 | Added on Saturday, May 15, 2021 10:26:26 PM
 
-Structured programming imposes discipline on direct transfer of control.
+This is test highlight 6.
 ==========
