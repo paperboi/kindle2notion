@@ -36,9 +36,9 @@ def prepare_aggregated_text_for_one_book(highlights):
 
         aggregated_text += text + '\n('
         if page != '':
-            aggregated_text += ITALIC + 'Page: ' + page + ITALIC + '\t'
+            aggregated_text += ITALIC + 'Page: ' + page + ITALIC + '  '
         if location != '':
-            aggregated_text += ITALIC + 'Location: ' + location + ITALIC + '\t'
+            aggregated_text += ITALIC + 'Location: ' + location + ITALIC + '  '
         if ENABLE_HIGHLIGHT_DATE and (date is not None and date != ''):
             aggregated_text += ITALIC + 'Date Added: ' + str(date.strftime('%A, %d %B %Y %I:%M:%S %p')) + ITALIC
 
