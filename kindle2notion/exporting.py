@@ -1,17 +1,21 @@
 from datetime import datetime
 from typing import Dict, List, Tuple
 
+from dateparser import parse
 from notion.block import TextBlock
+from notion.client import NotionClient
 from notion.collection import NotionDate
 from requests import get
 
-from kindle2notion.settings import ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, NOTION_CLIENT, NOTION_COLLECTION_VIEW, \
-    NOTION_COLLECTION_VIEW_ROWS, NO_COVER_IMG, ITALIC
+NO_COVER_IMG = 'https://via.placeholder.com/150x200?text=No%20Cover'
+ITALIC = '*'
+
 
 # TODO: Refactor this module
 
 
-def export_to_notion(books: Dict) -> None:
+def export_to_notion(books: Dict, enable_highlight_date: bool, enable_book_cover: bool, notion_token: str,
+                     notion_table_id: str) -> None:
     print('Initiating transfer...\n')
 
     for title in books:
@@ -19,14 +23,16 @@ def export_to_notion(books: Dict) -> None:
         author = book['author']
         highlights = book['highlights']
         highlight_count = len(highlights)
-        aggregated_text_from_highlights, last_date = _prepare_aggregated_text_for_one_book(highlights)
+        aggregated_text_from_highlights, last_date = _prepare_aggregated_text_for_one_book(highlights,
+                                                                                           enable_highlight_date)
 
-        message = _add_book_to_notion(title, author, highlight_count, aggregated_text_from_highlights, last_date)
+        message = _add_book_to_notion(title, author, highlight_count, aggregated_text_from_highlights, last_date,
+                                      notion_token, notion_table_id, enable_book_cover)
         if message != 'None to add':
             print('✓', message)
 
 
-def _prepare_aggregated_text_for_one_book(highlights: List) -> Tuple[str, str]:
+def _prepare_aggregated_text_for_one_book(highlights: List, enable_highlight_date: bool) -> Tuple[str, str]:
     aggregated_text = ''
     for highlight in highlights:
         text = highlight[0]
@@ -39,7 +45,7 @@ def _prepare_aggregated_text_for_one_book(highlights: List) -> Tuple[str, str]:
             aggregated_text += ITALIC + 'Page: ' + page + ITALIC + '  '
         if location != '':
             aggregated_text += ITALIC + 'Location: ' + location + ITALIC + '  '
-        if ENABLE_HIGHLIGHT_DATE and (date != ''):
+        if enable_highlight_date and (date != ''):
             aggregated_text += ITALIC + 'Date Added: ' + date + ITALIC
 
         aggregated_text = aggregated_text.strip() + ')\n\n'
@@ -47,14 +53,18 @@ def _prepare_aggregated_text_for_one_book(highlights: List) -> Tuple[str, str]:
     return aggregated_text, last_date
 
 
-def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregated_text: str, last_date: str) -> str:
-    title_exists = False
+def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregated_text: str, last_date: str,
+                        notion_token: str, notion_table_id: str, enable_book_cover: bool) -> str:
+    notion_client = NotionClient(token_v2=notion_token)
+    notion_collection_view = notion_client.get_collection_view(notion_table_id)
+    notion_collection_view_rows = notion_collection_view.collection.get_rows()
 
-    if NOTION_COLLECTION_VIEW_ROWS:
-        for each_row in NOTION_COLLECTION_VIEW_ROWS:
-            if title == each_row.title and author == each_row.author:
+    title_exists = False
+    if notion_collection_view_rows:
+        for row in notion_collection_view_rows:
+            if title == row.title and author == row.author:
                 title_exists = True
-                row = each_row
+                row = row
 
                 if row.highlights is None:
                     row.highlights = 0  # to initialize number of highlights as 0
@@ -66,12 +76,12 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
     print('-' * len(title_and_author))
 
     if not title_exists:
-        row = NOTION_COLLECTION_VIEW.collection.add_row()
+        row = notion_collection_view.collection.add_row()
         row.title = title
         row.author = author
         row.highlights = 0
 
-        if ENABLE_BOOK_COVER:
+        if enable_book_cover:
             if row.cover is None:
                 result = _get_book_cover_uri(row.title, row.author)
             if result is not None:
@@ -80,9 +90,9 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
             else:
                 row.cover = NO_COVER_IMG
                 print('× Book cover couldn\'t be found. '
-                      'Please replace the placeholder image with the original book cover manually')
+                      'Please replace the placeholder image with the original book cover manually.')
 
-    parent_page = NOTION_CLIENT.get_block(row.id)
+    parent_page = notion_client.get_block(row.id)
 
     # For existing books with new highlights to add
     for all_blocks in parent_page.children:
@@ -90,7 +100,7 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
     parent_page.children.add_new(TextBlock, title=aggregated_text)
     diff_count = highlight_count - row.highlights
     row.highlights = highlight_count
-    row.last_highlighted = NotionDate(last_date)
+    row.last_highlighted = NotionDate(parse(last_date))
     row.last_synced = NotionDate(datetime.now())
     message = str(diff_count) + ' notes / highlights added successfully\n'
     return message

@@ -1,14 +1,15 @@
 from datetime import datetime
+from pathlib import Path
 
 from kindle2notion.parsing import parse_raw_clippings_text, _parse_author_and_title, _parse_page_location_and_date, \
     _add_parsed_items_to_books_dict
 from kindle2notion.reading import read_raw_clippings
-from kindle2notion.settings import TEST_CLIPPINGS_FILE
 
 
 def test_parse_raw_clippings_text_should_return_a_dict_with_all_the_parsed_information():
     # Given
-    raw_clippings_text = read_raw_clippings(TEST_CLIPPINGS_FILE)
+    test_clippings_file_path = Path(__file__).parent.absolute() / 'test_data/Test Clippings.txt'
+    raw_clippings_text = read_raw_clippings(test_clippings_file_path)
 
     expected = {'Title 1: A Great Book': {'author': 'Ben Horowitz',
                                           'highlights': [('This is test highlight 1.', '11', '111-114',
