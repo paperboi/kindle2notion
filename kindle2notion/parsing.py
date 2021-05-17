@@ -3,8 +3,6 @@ from typing import Dict, List, Tuple
 
 from dateparser import parse
 
-from kindle2notion.settings import ENABLE_HIGHLIGHT_DATE
-
 
 def parse_raw_clippings_text(raw_clippings_text: str) -> Dict:
     raw_clippings_list = raw_clippings_text.split('==========')
@@ -51,8 +49,9 @@ def _parse_page_location_and_date(raw_clipping_list: List) -> Tuple[str, str, st
             page = element[element.find('page'):].replace('page', '').strip()
         if 'location' in element:
             location = element[element.find('location'):].replace('location', '').strip()
-        if ENABLE_HIGHLIGHT_DATE and ('added on' in element):
+        if 'added on' in element:
             date = parse(element[element.find('added on'):].replace('added on', '').strip())
+            date = date.strftime('%A, %d %B %Y %I:%M:%S %p')
 
     return page, location, date
 

@@ -8,6 +8,8 @@ from requests import get
 from kindle2notion.settings import ENABLE_HIGHLIGHT_DATE, ENABLE_BOOK_COVER, NOTION_CLIENT, NOTION_COLLECTION_VIEW, \
     NOTION_COLLECTION_VIEW_ROWS, NO_COVER_IMG, ITALIC
 
+# TODO: Refactor this module
+
 
 def export_to_notion(books: Dict) -> None:
     print('Initiating transfer...\n')
@@ -37,8 +39,8 @@ def _prepare_aggregated_text_for_one_book(highlights: List) -> Tuple[str, str]:
             aggregated_text += ITALIC + 'Page: ' + page + ITALIC + '  '
         if location != '':
             aggregated_text += ITALIC + 'Location: ' + location + ITALIC + '  '
-        if ENABLE_HIGHLIGHT_DATE and (date is not None and date != ''):
-            aggregated_text += ITALIC + 'Date Added: ' + str(date.strftime('%A, %d %B %Y %I:%M:%S %p')) + ITALIC
+        if ENABLE_HIGHLIGHT_DATE and (date != ''):
+            aggregated_text += ITALIC + 'Date Added: ' + date + ITALIC
 
         aggregated_text = aggregated_text.strip() + ')\n\n'
     last_date = date
