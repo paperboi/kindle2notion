@@ -19,6 +19,3 @@ NOTION_COLLECTION_VIEW_ROWS = NOTION_COLLECTION_VIEW.collection.get_rows()
 
 NO_COVER_IMG = 'https://via.placeholder.com/150x200?text=No%20Cover'
 ITALIC = '*'
-
-if not sys.version_info >= (3, 5):
-    print('Please update your Python version via the "python -m pip install –upgrade pip" command.')
