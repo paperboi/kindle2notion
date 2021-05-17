@@ -1,4 +1,4 @@
-from decouple import config
+import click
 from notion.client import NotionClient
 
 from kindle2notion.exporting import export_to_notion
@@ -6,13 +6,17 @@ from kindle2notion.parsing import parse_raw_clippings_text
 from kindle2notion.reading import read_raw_clippings
 
 
-def main():
-    clippings_file_path = config('CLIPPINGS_FILE')
-    enable_highlight_date = config('ENABLE_HIGHLIGHT_DATE')
-    enable_book_cover = config('ENABLE_BOOK_COVER')
+@click.command()
+@click.argument('notion_token')
+@click.argument('notion_table_id')
+@click.option('--clippings_file_path', default='/Volumes/Kindle/documents/My Clippings.txt',
+              help='Define the absolute path to your Kindle clippings file.')
+@click.option('--enable_highlight_date', default=True,
+              help='Set to False if you don\'t want to see the "Date Added" information in Notion.')
+@click.option('--enable_book_cover', default=True,
+              help='Set to False if you don\'t want to store the book cover in Notion.')
+def main(notion_token, notion_table_id, clippings_file_path, enable_highlight_date, enable_book_cover):
 
-    notion_token = config('NOTION_TOKEN')
-    notion_table_id = config('NOTION_TABLE_ID')
     notion_client = NotionClient(token_v2=notion_token)
     notion_collection_view = notion_client.get_collection_view(notion_table_id)
 

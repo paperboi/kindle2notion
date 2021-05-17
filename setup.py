@@ -23,7 +23,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    packages=find_packages(exclude=['test', 'test.*', 'data']),
+    packages=find_packages(),
     install_requires=requirements,
     extras_require={
         'dev': requirements_dev

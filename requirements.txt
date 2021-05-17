@@ -1,3 +1,4 @@
+click==8.0.0
 dateparser==1.0.0
 DateTime==4.3
 notion==0.0.27
