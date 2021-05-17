@@ -66,32 +66,35 @@ To get a local copy up and running follow these simple steps.
 * A Notion account to store your links.
 * Python 3 on your system to run the code.
 
-### Setup & Installation
+### Quickstart
  
-1. Clone this repository.
+1. Install the library.
     ```sh
-    git clone https://github.com/paperboi/Kindle2Notion.git
+    pip install kindle2notion
     ```
-2. Navigate to the directory and install the pre-requisite packages using
+2. Export your Kindle highlights and notes to Notion!
    ```sh
-   pip install .
+   kindle2notion <your_notion_token> <your_notion_table_id>
    ```
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Detailed notice
 
 1. Plug in your Kindle device to your PC.
 2. Duplicate this [database template](https://www.notion.so/imesut/2613943b8afa41f1b99c211b6cad7a90?v=91095371fbd4435cae44dd9490fdeeb1) to your Notion workspace.
-3. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
+3. Find your Notion token. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
    - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token.
-4. Store the path to your `MyClippings.txt` file, the address to your database and the `token_v2` value as `CLIPPINGS_FILE`, `NOTION_TABLE_ID` and `NOTION_TOKEN` respectively in a `.env` file (example provided in the repo) in the same directory you have cloned this repository to.
-   - Set `ENABLE_HIGHLIGHT_DATE` to **False**, if you don't want to see **'date added'** information.
-   - Set `ENABLE_BOOK_COVER` to **False**, if you don't want to store book covers to your databases.
-5. To execute the script, navigate to the directory and run
+4. Find your Notion table ID: it's simply the URL of your database template.    
+5. You may modify some default parameters of the command-line with the following options of the CLI:
+    --clippings_file_path       Define the absolute path to your Kindle clippings file.
+    --enable_highlight_date     Set to False if you don't want to see the "Date Added" information in Notion.
+    --enable_book_cover         Set to False if you don't want to store the book cover in Notion.
+
+5. Export your Kindle highlights and notes to Notion!
    ```sh
-   python kindle2notion
+   kindle2notion <your_notion_token> <your_notion_table_id>
    ```
 [**Note:** This code was tested on a 4th Gen Kindle Paperwhite.]
 
