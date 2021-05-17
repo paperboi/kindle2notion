@@ -3,9 +3,11 @@ import sys
 from decouple import config
 from notion.client import NotionClient
 
+from pathlib import Path
+
 # Store these values in an .env file in this directory (See '/.env.example').
 CLIPPINGS_FILE = config('CLIPPINGS_FILE')
-TEST_CLIPPINGS_FILE = config('TEST_CLIPPINGS_FILE')
+TEST_CLIPPINGS_FILE = Path(__file__).parents[1].absolute()/'tests/test_data/Test Clippings.txt'
 NOTION_TOKEN = config('NOTION_TOKEN')
 NOTION_TABLE_ID = config('NOTION_TABLE_ID')
 ENABLE_HIGHLIGHT_DATE = config('ENABLE_HIGHLIGHT_DATE') == 'True'  # If not returns False
