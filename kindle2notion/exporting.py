@@ -54,7 +54,7 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
                 title_exists = True
                 row = each_row
 
-                if row.highlights == None:
+                if row.highlights is None:
                     row.highlights = 0  # to initialize number of highlights as 0
                 elif row.highlights == highlight_count:  # if no change in highlights
                     return 'None to add'
@@ -70,9 +70,9 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
         row.highlights = 0
 
         if ENABLE_BOOK_COVER:
-            if row.cover == None:
+            if row.cover is None:
                 result = _get_book_cover_uri(row.title, row.author)
-            if result != None:
+            if result is not None:
                 row.cover = result
                 print('✓ Added book cover')
             else:
@@ -97,10 +97,11 @@ def _add_book_to_notion(title: str, author: str, highlight_count: int, aggregate
 def _get_book_cover_uri(title: str, author: str):
     req_uri = 'https://www.googleapis.com/books/v1/volumes?q='
 
-    if title == None: return
+    if title is None:
+        return
     req_uri += 'intitle:' + title
 
-    if author != None:
+    if author is not None:
         req_uri += '+inauthor:' + author
 
     response = get(req_uri).json().get('items', [])
