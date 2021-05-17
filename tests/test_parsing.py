@@ -26,7 +26,7 @@ def test_parse_raw_clippings_text_should_return_a_dict_with_all_the_parsed_infor
     assert expected == actual
 
 
-def test_parse_author_and_title_case_1():
+def test_parse_author_and_title_case_should_parse_the_author_and_title_when_the_author_name_is_formatted_with_a_comma():
     # Given
     raw_clipping_list = ['Relativity (Einstein, Albert)',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -41,7 +41,7 @@ def test_parse_author_and_title_case_1():
     assert expected == actual
 
 
-def test_parse_author_and_title_case_2():
+def test_parse_author_and_title_case_should_parse_the_author_and_title_when_the_author_name_is_first_name_last_name():
     # Given
     raw_clipping_list = ['Relativity (Albert Einstein)',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -56,7 +56,7 @@ def test_parse_author_and_title_case_2():
     assert expected == actual
 
 
-def test_parse_author_and_title_case_3():
+def test_parse_author_and_title_case_should_parse_the_author_and_title_when_there_are_parentheses_in_the_author_name():
     # Given
     raw_clipping_list = ['Candide (Voltaire (François-Marie Arouet))',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -71,7 +71,7 @@ def test_parse_author_and_title_case_3():
     assert expected == actual
 
 
-def test_parse_author_and_title_case_4():
+def test_parse_author_and_title_case_should_parse_the_author_and_title_when_there_is_a_The_at_the_end_of_the_title():
     # Given
     raw_clipping_list = ['Age of Louis XIV, The (Voltaire (François-Marie Arouet))',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -86,7 +86,7 @@ def test_parse_author_and_title_case_4():
     assert expected == actual
 
 
-def test_parse_author_and_title_case_5():
+def test_parse_author_and_title_case_should_parse_the_author_and_title_when_there_are_parentheses_in_the_title():
     # Given
     raw_clipping_list = ['The Mysterious Disappearance of Leon (I Mean Noel) (Ellen Raskin)',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -101,7 +101,7 @@ def test_parse_author_and_title_case_5():
     assert expected == actual
 
 
-def test_parse_page_location_and_date_case_1():
+def test_parse_page_location_and_date_should_parse_the_page_location_and_date_when_there_are_all_three():
     # Given
     raw_clipping_list = ['Relativity (Albert Einstein)',
                          '- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -116,7 +116,7 @@ def test_parse_page_location_and_date_case_1():
     assert expected == actual
 
 
-def test_parse_page_location_and_date_case_2():
+def test_parse_page_location_and_date_should_parse_the_page_and_location_when_there_is_no_date():
     # Given
     raw_clipping_list = ['Relativity (Albert Einstein)',
                          '- Your Highlight on page 3 | Location 184-185',
@@ -131,7 +131,7 @@ def test_parse_page_location_and_date_case_2():
     assert expected == actual
 
 
-def test_parse_page_location_and_date_case_3():
+def test_parse_page_location_and_date_should_parse_the_location_and_date_when_there_is_no_page():
     # Given
     raw_clipping_list = ['Relativity (Albert Einstein)',
                          'Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -146,7 +146,7 @@ def test_parse_page_location_and_date_case_3():
     assert expected == actual
 
 
-def test_parse_page_location_and_date_case_4():
+def test_parse_page_location_and_date_should_parse_the_page_and_date_when_there_is_no_location():
     # Given
     raw_clipping_list = ['Relativity (Albert Einstein)',
                          '- Your Highlight on page 3 | Added on Friday, April 30, 2021 12:31:29 AM',
@@ -161,10 +161,10 @@ def test_parse_page_location_and_date_case_4():
     assert expected == actual
 
 
-# TODO: rename all tests with appropriate when
+# TODO: In tests above, refacto the functions to include the dates
 
 
-def test_add_parsed_items_to_books_dict_when_book_does_not_exist():
+def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_book_is_not_already_in_the_books_dict():
     # Given
     books = {}
     title = 'Relativity'
@@ -184,7 +184,7 @@ def test_add_parsed_items_to_books_dict_when_book_does_not_exist():
     assert expected == actual
 
 
-def test_add_parsed_items_to_books_dict_when_book_exists():
+def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_book_is_already_in_the_books_dict():
     # Given
     books = {'Relativity': {'author': 'Albert Einstein',
                             'highlights': [('This is a first highlight.', '1', '100', 'monday')]}}
