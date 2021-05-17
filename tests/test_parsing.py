@@ -1,5 +1,5 @@
-from kindle2notion.parsing import get_page_or_and_loc, deal_with_exceptions_in_author_name, \
-    deal_with_exceptions_in_title, parse_clippings
+from kindle2notion.parsing import _get_page_or_and_loc, _deal_with_exceptions_in_author_name, \
+    _deal_with_exceptions_in_title, parse_raw_clippings_text
 
 
 def test_parse_clippings():
@@ -19,7 +19,7 @@ def test_parse_clippings():
                                                                    ('This is test highlight 6.', '22', '2', '')]}}
 
     # When
-    actual = parse_clippings(all_clippings)
+    actual = parse_raw_clippings_text(all_clippings)
 
     # Then
     assert expected == actual
@@ -35,7 +35,7 @@ def test_get_page_or_and_loc():
     expected = ('- Your Highlight on page 3', ['Location 184-185', 'Added on Friday, April 30, 2021 12:31:29 AM'])
 
     # When
-    actual = get_page_or_and_loc(clipping)
+    actual = _get_page_or_and_loc(clipping)
 
     # Then
     assert expected == actual
@@ -48,7 +48,7 @@ def test_deal_with_exceptions_in_author_name_when_nominal():
     expected_author, expected_title = ('BA SA', 'A Masterpiece')
 
     # When
-    actual_author, actual_title = deal_with_exceptions_in_author_name(author, title)
+    actual_author, actual_title = _deal_with_exceptions_in_author_name(author, title)
 
     # Then
     assert (expected_author, expected_title) == (actual_author, actual_title)
@@ -61,7 +61,7 @@ def test_deal_with_exceptions_in_author_name_when_comma_in_author_name():
     expected_author, expected_title = ('Colin Bryar', 'Working Backwards')
 
     # When
-    actual_author, actual_title = deal_with_exceptions_in_author_name(author, title)
+    actual_author, actual_title = _deal_with_exceptions_in_author_name(author, title)
 
     # Then
     assert (expected_author, expected_title) == (actual_author, actual_title)
@@ -74,7 +74,7 @@ def test_deal_with_exceptions_in_author_name_when_parentheses_in_author_name():
     expected_author, expected_title = ('Voltaire (François-Marie Arouet)', 'Random title')
 
     # When
-    actual_author, actual_title = deal_with_exceptions_in_author_name(author, title)
+    actual_author, actual_title = _deal_with_exceptions_in_author_name(author, title)
 
     # Then
     assert (expected_author, expected_title) == (actual_author, actual_title)
@@ -86,7 +86,7 @@ def test_deal_with_exceptions_in_title_when_nominal():
     expected = 'Working Backwards'
 
     # When
-    actual = deal_with_exceptions_in_title(title)
+    actual = _deal_with_exceptions_in_title(title)
 
     # Then
     assert expected == actual
@@ -98,7 +98,7 @@ def test_deal_with_exceptions_in_title_when_exception():
     expected = 'The Mysterious Disappearance of Leon (I Mean Noel)'
 
     # When
-    actual = deal_with_exceptions_in_title(title)
+    actual = _deal_with_exceptions_in_title(title)
 
     # Then
     assert expected == actual

@@ -1,4 +1,4 @@
-from kindle2notion.exporting import prepare_aggregated_text_for_one_book
+from kindle2notion.exporting import _prepare_aggregated_text_for_one_book
 
 
 def test_prepare_notion_information_for_one_book():
@@ -10,7 +10,7 @@ def test_prepare_notion_information_for_one_book():
                 'This is a second example highlight.\n(*Page: 34*  *Location: 4*)\n\n', '')
 
     # When
-    actual = prepare_aggregated_text_for_one_book(highlights)
+    actual = _prepare_aggregated_text_for_one_book(highlights)
 
     # Then
     assert expected == actual
