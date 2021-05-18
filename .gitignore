@@ -2,3 +2,4 @@
 MyClippings.txt
 __pycache__/
 .vscode/
+.coverage
