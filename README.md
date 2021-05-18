@@ -74,7 +74,7 @@ To get a local copy up and running follow these simple steps.
     ```
 2. Export your Kindle highlights and notes to Notion!
    ```sh
-   kindle2notion <your_notion_token> <your_notion_table_id>
+   kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
    ```
 
 
@@ -92,13 +92,12 @@ To get a local copy up and running follow these simple steps.
 4. Find your Notion table ID: it's simply the URL of your database template.  
    
 5. You may modify some default parameters of the command-line with the following options of the CLI:
-   - ```--clippings_file_path```    Define the absolute path to your Kindle clippings file.
    - ```--enable_highlight_date```  Set to False if you don't want to see the "Date Added" information in Notion.
    - ```--enable_book_cover```      Set to False if you don't want to store the book cover in Notion.
     
 6. Export your Kindle highlights and notes to Notion!
    ```sh
-   kindle2notion <your_notion_token> <your_notion_table_id>
+   kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
    ```
 You may also get some help with the following command:
    ```sh

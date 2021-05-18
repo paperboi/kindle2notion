@@ -9,8 +9,7 @@ from kindle2notion.reading import read_raw_clippings
 @click.command()
 @click.argument('notion_token')
 @click.argument('notion_table_id')
-@click.option('--clippings_file_path', default='/Volumes/Kindle/documents/My Clippings.txt',
-              help='Define the absolute path to your Kindle clippings file.')
+@click.argument('clippings_file_path')
 @click.option('--enable_highlight_date', default=True,
               help='Set to False if you don\'t want to see the "Date Added" information in Notion.')
 @click.option('--enable_book_cover', default=True,
