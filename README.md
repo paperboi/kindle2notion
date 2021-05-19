@@ -1,7 +1,7 @@
 
 <!-- PROJECT OVERVIEW -->
 <p align="center">
-  <img width="500" height="281" src="k2n.jpg">
+  <img width="500" src="https://i.imgur.com/mJOjtvo.png">
 </p>
 <!-- <h1 align="center">Kindle2Notion</h1> -->
 <p align="center">
@@ -32,8 +32,8 @@
 - [About The Project](#about-the-project)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Setup & Installation](#setup--installation)
-- [Usage](#usage)
+  - [Quickstart](#quickstart)
+- [Detailed notice](#detailed-notice)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
