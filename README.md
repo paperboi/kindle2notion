@@ -11,11 +11,11 @@
   ·
   <a href="https://github.com/paperboi/Kindle2Notion/issues">File issues and feature requests here</a>
 </p>
-<p align -"center>
-  If you found this script helpful or appreciate my work, you can support me here:
-</p>
 <p align="center">
-  <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 20px;width: 70px;" ></a>
+  If you found this script helpful or appreciate my work, you can support me here:
+  <br><br>
+  <a href="https://www.producthunt.com/posts/kindle2notion?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-kindle2notion" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=295918&theme=light" alt="Kindle2Notion - Export your Kindle clippings to a Notion database. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+  <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 54px;" height="54"></a>
 </p>
 
 [![Contributors][contributors-shield]][contributors-url]
@@ -32,8 +32,8 @@
 - [About The Project](#about-the-project)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Quickstart](#quickstart)
-- [Detailed notice](#detailed-notice)
+  - [Installation](#installation)
+- [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -66,45 +66,56 @@ To get a local copy up and running follow these simple steps.
 * A Notion account to store your links.
 * Python 3 on your system to run the code.
 
-### Quickstart
+### Installation
  
 1. Install the library.
     ```sh
     pip install kindle2notion
     ```
 2. Export your Kindle highlights and notes to Notion!
+   - On MacOS and UNIX,
    ```sh
    kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
+   ```
+   - On Windows
+   ```sh
+   python -m kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
    ```
 
 
 
 <!-- USAGE EXAMPLES -->
-## Detailed notice
+## Usage
 
 1. Plug in your Kindle device to your PC.
    
 2. Duplicate this [database template](https://www.notion.so/imesut/2613943b8afa41f1b99c211b6cad7a90?v=91095371fbd4435cae44dd9490fdeeb1) to your Notion workspace.
    
 3. Find your Notion token. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
-   - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token.
+   - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token listed next to *tokenv2_*.
     
-4. Find your Notion table ID: it's simply the URL of your database template.  
+4. Find your Notion table ID: it's simply the URL of the database you have copied to your workspace.  
    
 5. You may modify some default parameters of the command-line with the following options of the CLI:
    - ```--enable_highlight_date```  Set to False if you don't want to see the "Date Added" information in Notion.
    - ```--enable_book_cover```      Set to False if you don't want to store the book cover in Notion.
     
 6. Export your Kindle highlights and notes to Notion!
+   - On MacOS and UNIX,
    ```sh
    kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
    ```
-You may also get some help with the following command:
+   - On Windows
+   ```sh
+   python -m kindle2notion <your_notion_token> <your_notion_table_id> <your_kindle_clippings_file>
+   ```
+You may also avail help with the following command:
    ```sh
    kindle2notion --help
+   python -m kindle2notion --help
    ```
 
-[**Note:** This code was tested on a 4th Gen Kindle Paperwhite.]
+[**Note:** This code has been tested on a 4th Gen Kindle Paperwhite on both MacOS and Windows.]
 
 
 <!-- ROADMAP -->
@@ -138,10 +149,7 @@ Distributed under the MIT License. See [LICENSE][license-url] for more informati
 <!-- CONTACT -->
 ## Contact
 
-Jeffrey Jacob
-- [Twitter](https://twitter.com/jeffreysamjacob)
-- [Email](mailto:jeffreysamjacob@gmail.com)
-- [LinkedIn](https://www.linkedin.com/in/jeffreysamjacob/)
+Jeffrey Jacob ([Twitter](https://twitter.com/jeffreysamjacob) | [Email](mailto:jeffreysamjacob@gmail.com) | [LinkedIn](https://www.linkedin.com/in/jeffreysamjacob/))
 
 
 
@@ -158,5 +166,3 @@ Jeffrey Jacob
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=flat-square&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/jeffreysamjacob/
 [product-demo]: https://i.imgur.com/IlDmEOy.gif
-[bmac]: bmac.png
-[bmac-url]: https://www.buymeacoffee.com/jeffreyjacob
