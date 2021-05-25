@@ -65,9 +65,14 @@ def _add_parsed_items_to_books_dict(books: Dict, title: str, author: str, highli
 
 
 def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
-    author = (re.findall(r'\(.*?\)', raw_clipping_list[0]))[-1]
-    author = author.removeprefix('(').removesuffix(')')
+    author = ""
     title = raw_clipping_list[0].replace(author, '').strip().replace(u'\ufeff', '').replace(' ()', '')
+
+    if (re.findall(r'\(.*?\)', raw_clipping_list[0])):
+        author = (re.findall(r'\(.*?\)', raw_clipping_list[0]))[-1]
+        author = author.removeprefix('(').removesuffix(')')
+    else:
+        print("For"+ title + ", No author found. You can manually add the Author details in the Notion database.")
     return author, title
 
 
