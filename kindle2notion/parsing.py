@@ -75,9 +75,17 @@ def _deal_with_exceptions_in_author_name(author: str, title: str) -> Tuple[str, 
     if '(' in author:
         author = author + ')'
         title = title.removesuffix(')')
-    if ', ' in author:
-        last_name, first_name = author.split(', ')
-        author = first_name + ' ' + last_name
+    
+    multiple_author_delimiters = ['; ', ' & ', ' and ']
+    if ', ' in author and any(x not in author for x in multiple_author_delimiters):
+        author = " ".join(reversed(author.split(', ')))
+
+    if '; ' in author:
+        authorList = author.split('; ')
+        author = ''
+        for ele in authorList:
+            author += " ".join(reversed(ele.split(', '))) + ', '
+        author = author.removesuffix(', ')
     return author, title
 
 

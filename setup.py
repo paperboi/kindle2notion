@@ -28,7 +28,7 @@ setup(
     extras_require={
         'dev': requirements_dev
     },
-    python_requires='>=3.7',
+    python_requires='>=3.9',
     entry_points={
         'console_scripts': [
             'kindle2notion = kindle2notion.__main__:main',
