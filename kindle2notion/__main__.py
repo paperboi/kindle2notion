@@ -1,10 +1,9 @@
 import click
 from notion.client import NotionClient
 
-from kindle2notion.exporting import export_to_notion
-from kindle2notion.parsing import parse_raw_clippings_text
-from kindle2notion.reading import read_raw_clippings
-
+from exporting import export_to_notion
+from parsing import parse_raw_clippings_text
+from reading import read_raw_clippings
 
 @click.command()
 @click.argument('notion_token')
