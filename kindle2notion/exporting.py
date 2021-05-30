@@ -118,6 +118,15 @@ def _get_book_cover_uri(title: str, author: str):
 
     response = get(req_uri).json().get('items', [])
     if len(response) > 0:
-        return response[0].get('volumeInfo', {}).get('imageLinks', {}).get('thumbnail')
+        return (
+            response[0]
+            .get('volumeInfo', {})
+            .get('imageLinks', {})
+            .get('thumbnail')
+            .replace(
+                'http://',
+                'https://',
+                count=1)
+            )
 
     return
