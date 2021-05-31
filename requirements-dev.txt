@@ -1,3 +1,4 @@
+black==20.8b1
 flake8==3.9.2
 pytest==6.2.4
 pytest-cov==2.12.0
