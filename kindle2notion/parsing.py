@@ -79,6 +79,11 @@ def _add_parsed_items_to_books_dict(
 
 def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
     author = ""
+
+    if re.findall(r"\(.*?\)", raw_clipping_list[0]):
+        author = (re.findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
+        author = author.removeprefix("(").removesuffix(")")
+
     title = (
         raw_clipping_list[0]
         .replace(author, "")
@@ -87,10 +92,7 @@ def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
         .replace(" ()", "")
     )
 
-    if re.findall(r"\(.*?\)", raw_clipping_list[0]):
-        author = (re.findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
-        author = author.removeprefix("(").removesuffix(")")
-    else:
+    if not author:
         print(
             "For"
             + title
