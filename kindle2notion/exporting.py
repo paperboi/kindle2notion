@@ -23,11 +23,9 @@ def export_to_notion(books: Dict, enable_highlight_date: bool, enable_book_cover
         author = book['author']
         highlights = book['highlights']
         highlight_count = len(highlights)
-        aggregated_text_from_highlights, last_date = _prepare_aggregated_text_for_one_book(highlights,
-                                                                                           enable_highlight_date)
-
+        aggregated_text_from_highlights, last_date = _prepare_aggregated_text_for_one_book(highlights, enable_highlight_date)
         message = _add_book_to_notion(title, author, highlight_count, aggregated_text_from_highlights, last_date,
-                                      notion_token, notion_table_id, enable_book_cover)
+                                        notion_token, notion_table_id, enable_book_cover)
         if message != 'None to add':
             print('✓', message)
 

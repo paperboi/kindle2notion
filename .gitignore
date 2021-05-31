@@ -3,3 +3,6 @@ MyClippings.txt
 __pycache__/
 .vscode/
 .coverage
+first_micro/
+dist/
+images/
