@@ -10,11 +10,11 @@ with open("requirements-dev.txt", "r", encoding="utf-8") as f:
     requirements_dev = f.read()
 
 setup(
-    name="kindle2notion",
-    version="0.1.2",
-    author="Jeffrey Jacob",
-    author_email="jeffreysamjacob@gmail.com",
-    description="Export all the clippings from your Kindle device to a database in Notion.",
+    name='kindle2notion',
+    version='0.1.3',
+    author='Jeffrey Jacob',
+    author_email='jeffreysamjacob@gmail.com',
+    description='Export all the clippings from your Kindle device to a database in Notion.',
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/paperboi/kindle2notion",

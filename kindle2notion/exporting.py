@@ -51,6 +51,7 @@ def _prepare_aggregated_text_for_one_book(
     highlights: List, enable_highlight_date: bool
 ) -> Tuple[str, str]:
     aggregated_text = ""
+
     for highlight in highlights:
         text = highlight[0]
         page = highlight[1]
