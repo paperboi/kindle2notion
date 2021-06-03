@@ -164,12 +164,7 @@ def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
             "No author found. You can manually add the Author details in the Notion database."
         )
 
-    title = (
-        raw_clipping_list[0]
-        .replace(author, "")
-        .strip()
-        .replace(" ()", "")
-    )
+    title = raw_clipping_list[0].replace(author, "").strip().replace(" ()", "")
 
     return author, title
 
