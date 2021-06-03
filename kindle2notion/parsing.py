@@ -12,28 +12,6 @@ ACADEMIC_TITLES = [
     "A.D.N.",
     "A.M.",
     "A.M.T.",
-    "B.A.",
-    "B.A.M.",
-    "B.Arch.",
-    "B.B.A.",
-    "B.C.E.",
-    "B.Ch.E.",
-    "B.E.D.",
-    "B.E.E.",
-    "B.F.A.",
-    "B.J.",
-    "B.Lit.",
-    "B.M.",
-    "B.M.S.",
-    "B.N.",
-    "B.Pharm.",
-    "B.S.",
-    "B.S.B.A.",
-    "B.S.Ed.",
-    "B.S.E.E.",
-    "B.S.N.",
-    "B.S.N.S.",
-    "B.S.P.",
     "C.E.",
     "Ch.E.",
     "D.A.",
@@ -176,6 +154,16 @@ def _add_parsed_items_to_books_dict(
 
 def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
     author = ""
+    title = raw_clipping_list[0]
+
+    if re.findall(r"\(.*?\)", raw_clipping_list[0]):
+        author = (re.findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
+        author = author.removeprefix("(").removesuffix(")")
+    else:
+        print(
+            "No author found. You can manually add the Author details in the Notion database."
+        )
+
     title = (
         raw_clipping_list[0]
         .replace(author, "")
@@ -183,15 +171,6 @@ def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
         .replace(" ()", "")
     )
 
-    if re.findall(r"\(.*?\)", raw_clipping_list[0]):
-        author = (re.findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
-        author = author.removeprefix("(").removesuffix(")")
-    else:
-        print(
-            "For"
-            + title
-            + ", No author found. You can manually add the Author details in the Notion database."
-        )
     return author, title
 
 

@@ -93,7 +93,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Plug in your Kindle device to your PC.
    
-2. Duplicate this [database template](https://www.notion.so/imesut/2613943b8afa41f1b99c211b6cad7a90?v=91095371fbd4435cae44dd9490fdeeb1) to your Notion workspace.
+2. Duplicate this [database template](https://www.notion.so/kindle2notion/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your Notion workspace.
    
 3. Find your Notion token. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
    - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token listed next to *tokenv2_*.
