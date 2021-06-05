@@ -9,7 +9,7 @@ from requests import get
 
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 ITALIC = "*"
-
+BOLD = "__"
 
 # TODO: Refactor this module
 
@@ -55,6 +55,9 @@ def _prepare_aggregated_text_for_one_book(
         page = highlight[1]
         location = highlight[2]
         date = highlight[3]
+        isNote = highlight[4]
+        if isNote == True:
+            aggregated_text += BOLD + "Note: " + BOLD
 
         aggregated_text += text + "\n("
         if page != "":
@@ -146,5 +149,10 @@ def _get_book_cover_uri(title: str, author: str):
     if len(response) > 0:
         for x in response:
             if x.get("volumeInfo", {}).get("imageLinks", {}).get("thumbnail"):
-                return x.get("volumeInfo", {}).get("imageLinks", {}).get("thumbnail")
+                return (
+                    x.get("volumeInfo", {})
+                    .get("imageLinks", {})
+                    .get("thumbnail")
+                    .replace("http://", "https://")
+                )
     return
