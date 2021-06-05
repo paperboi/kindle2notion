@@ -79,7 +79,7 @@ To get a local copy up and running follow these simple steps.
 2. Export your Kindle highlights and notes to Notion!
    - On MacOS and UNIX,
    ```sh
-   kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file>'
+   kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
    ```
    - On Windows
    ```sh
