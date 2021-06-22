@@ -13,10 +13,12 @@ from kindle2notion.reading import read_raw_clippings
 @click.option(
     "--enable_highlight_date",
     default=True,
+    type=bool,
     help='Set to False if you don\'t want to see the "Date Added" information in Notion.',
 )
 @click.option(
     "--enable_book_cover",
+    type=bool,
     default=True,
     help="Set to False if you don't want to store the book cover in Notion.",
 )
