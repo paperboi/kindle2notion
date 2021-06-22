@@ -18,8 +18,8 @@ def export_to_notion(
     books: Dict,
     enable_highlight_date: bool,
     enable_book_cover: bool,
-    notion_token: str,
-    notion_table_id: str,
+    notion_client: NotionClient,
+    notion_collection_view,
 ) -> None:
     print("Initiating transfer...\n")
 
@@ -38,9 +38,9 @@ def export_to_notion(
             highlight_count,
             aggregated_text_from_highlights,
             last_date,
-            notion_token,
-            notion_table_id,
             enable_book_cover,
+            notion_collection_view,
+            notion_client,
         )
         if message != "None to add":
             print("✓", message)
@@ -56,7 +56,7 @@ def _prepare_aggregated_text_for_one_book(
         location = highlight[2]
         date = highlight[3]
         isNote = highlight[4]
-        if isNote == True:
+        if isNote is True:
             aggregated_text += BOLD + "Note: " + BOLD
 
         aggregated_text += text + "\n("
@@ -78,12 +78,10 @@ def _add_book_to_notion(
     highlight_count: int,
     aggregated_text: str,
     last_date: str,
-    notion_token: str,
-    notion_table_id: str,
     enable_book_cover: bool,
+    notion_client: NotionClient,
+    notion_collection_view,
 ) -> str:
-    notion_client = NotionClient(token_v2=notion_token)
-    notion_collection_view = notion_client.get_collection_view(notion_table_id)
     notion_collection_view_rows = notion_collection_view.collection.get_rows()
 
     title_exists = False

@@ -41,8 +41,8 @@ def main(
             books,
             enable_highlight_date,
             enable_book_cover,
-            notion_token,
-            notion_table_id,
+            notion_collection_view,
+            notion_client,
         )
         print("Transfer complete... Exiting script...")
 

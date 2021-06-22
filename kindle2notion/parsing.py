@@ -118,7 +118,7 @@ def _parse_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
 
 
 def _parse_page_location_and_date(
-    raw_clipping_list: List,
+        raw_clipping_list: List,
 ) -> Tuple[str, str, str, bool]:
     second_line = raw_clipping_list[1]
     second_line_as_list = second_line.strip().split(" | ")
@@ -130,14 +130,14 @@ def _parse_page_location_and_date(
         if "note" in element:
             isNote = True
         if "page" in element:
-            page = element[element.find("page") :].replace("page", "").strip()
+            page = element[element.find("page"):].replace("page", "").strip()
         if "location" in element:
             location = (
-                element[element.find("location") :].replace("location", "").strip()
+                element[element.find("location"):].replace("location", "").strip()
             )
         if "added on" in element:
             date = parse(
-                element[element.find("added on") :].replace("added on", "").strip()
+                element[element.find("added on"):].replace("added on", "").strip()
             )
             date = date.strftime("%A, %d %B %Y %I:%M:%S %p")
 
@@ -145,14 +145,14 @@ def _parse_page_location_and_date(
 
 
 def _add_parsed_items_to_books_dict(
-    books: Dict,
-    title: str,
-    author: str,
-    highlight: str,
-    page: str,
-    location: str,
-    date: str,
-    isNote: bool,
+        books: Dict,
+        title: str,
+        author: str,
+        highlight: str,
+        page: str,
+        location: str,
+        date: str,
+        isNote: bool,
 ) -> Dict:
     if title not in books:
         books[title] = {"author": author, "highlights": []}
