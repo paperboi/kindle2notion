@@ -104,6 +104,11 @@ To get a local copy up and running follow these simple steps.
    - ```--enable_highlight_date```  Set to False if you don't want to see the "Date Added" information in Notion.
    - ```--enable_book_cover```      Set to False if you don't want to store the book cover in Notion.
     
+Example:
+   ```sh
+   kindle2notion --enable_highlight_date=True --enable_book_cover=False 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
+   ```
+   
 6. Export your Kindle highlights and notes to Notion!
    - On MacOS and UNIX,
    ```sh
