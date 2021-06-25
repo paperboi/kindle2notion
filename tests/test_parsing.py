@@ -4,7 +4,7 @@ from pathlib import Path
 from kindle2notion.parsing import (
     parse_raw_clippings_text,
     _parse_author_and_title,
-    _parse_page_location_and_date,
+    _parse_page_location_date_and_note,
     _add_parsed_items_to_books_dict,
 )
 from kindle2notion.reading import read_raw_clippings
@@ -163,7 +163,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_ther
     assert expected == actual
 
 
-def test_parse_page_location_and_date_should_parse_the_page_location_and_date_when_there_are_all_three():
+def test_parse_page_location_date_and_note_should_parse_the_page_location_and_date_when_there_are_all_three():
     # Given
     raw_clipping_list = [
         "Relativity (Albert Einstein)",
@@ -171,16 +171,16 @@ def test_parse_page_location_and_date_should_parse_the_page_location_and_date_wh
         "",
         "This is a test highlight.",
     ]
-    expected = ("3", "184-185", "Friday, 30 April 2021 12:31:29 AM")
+    expected = ("3", "184-185", "Friday, 30 April 2021 12:31:29 AM", False)
 
     # When
-    actual = _parse_page_location_and_date(raw_clipping_list)
+    actual = _parse_page_location_date_and_note(raw_clipping_list)
 
     # Then
     assert expected == actual
 
 
-def test_parse_page_location_and_date_should_parse_the_page_and_location_when_there_is_no_date():
+def test_parse_page_location_date_and_note_should_parse_the_page_and_location_when_there_is_no_date():
     # Given
     raw_clipping_list = [
         "Relativity (Albert Einstein)",
@@ -188,16 +188,16 @@ def test_parse_page_location_and_date_should_parse_the_page_and_location_when_th
         "",
         "This is a test highlight.",
     ]
-    expected = ("3", "184-185", "")
+    expected = ("3", "184-185", "", False)
 
     # When
-    actual = _parse_page_location_and_date(raw_clipping_list)
+    actual = _parse_page_location_date_and_note(raw_clipping_list)
 
     # Then
     assert expected == actual
 
 
-def test_parse_page_location_and_date_should_parse_the_location_and_date_when_there_is_no_page():
+def test_parse_page_location_date_and_note_should_parse_the_location_and_date_when_there_is_no_page():
     # Given
     raw_clipping_list = [
         "Relativity (Albert Einstein)",
@@ -205,16 +205,16 @@ def test_parse_page_location_and_date_should_parse_the_location_and_date_when_th
         "",
         "This is a test highlight.",
     ]
-    expected = ("", "184-185", "Friday, 30 April 2021 12:31:29 AM")
+    expected = ("", "184-185", "Friday, 30 April 2021 12:31:29 AM", False)
 
     # When
-    actual = _parse_page_location_and_date(raw_clipping_list)
+    actual = _parse_page_location_date_and_note(raw_clipping_list)
 
     # Then
     assert expected == actual
 
 
-def test_parse_page_location_and_date_should_parse_the_page_and_date_when_there_is_no_location():
+def test_parse_page_location_date_and_note_should_parse_the_page_and_date_when_there_is_no_location():
     # Given
     raw_clipping_list = [
         "Relativity (Albert Einstein)",
@@ -222,10 +222,10 @@ def test_parse_page_location_and_date_should_parse_the_page_and_date_when_there_
         "",
         "This is a test highlight.",
     ]
-    expected = ("3", "", "Friday, 30 April 2021 12:31:29 AM")
+    expected = ("3", "", "Friday, 30 April 2021 12:31:29 AM", False)
 
     # When
-    actual = _parse_page_location_and_date(raw_clipping_list)
+    actual = _parse_page_location_date_and_note(raw_clipping_list)
 
     # Then
     assert expected == actual
