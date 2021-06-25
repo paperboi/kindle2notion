@@ -9,7 +9,7 @@ from requests import get
 
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 ITALIC = "*"
-BOLD = "__"
+BOLD = "**"
 
 # TODO: Refactor this module
 
