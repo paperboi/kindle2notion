@@ -91,7 +91,7 @@ def parse_raw_clippings_text(raw_clippings_text: str) -> Dict:
 
         if _is_valid_clipping(raw_clipping_list):
             author, title = _parse_author_and_title(raw_clipping_list)
-            page, location, date, isNote = _parse_page_location_and_date(
+            page, location, date, isNote = _parse_page_location_date_and_note(
                 raw_clipping_list
             )
             highlight = raw_clipping_list[3]
@@ -117,7 +117,7 @@ def _parse_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
     return author, title
 
 
-def _parse_page_location_and_date(
+def _parse_page_location_date_and_note(
     raw_clipping_list: List,
 ) -> Tuple[str, str, str, bool]:
     second_line = raw_clipping_list[1]
