@@ -1,0 +1,17 @@
+name: kindle2Notion
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip:
+    - click>=8.0.0
+    - dateparser>=1.0.0
+    - DateTime>=4.3
+    - notion>=0.0.27
+    - python-decouple>=3.3
+    - requests>=2.25.0
+    - pathlib
+    - flake8>=3.9.2
+    - pytest>=6.2.4
+    - pytest-cov>=2.12.0
+    - black>=21.5b2
