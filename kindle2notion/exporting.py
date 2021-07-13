@@ -55,8 +55,8 @@ def _prepare_aggregated_text_for_one_book(
         page = highlight[1]
         location = highlight[2]
         date = highlight[3]
-        isNote = highlight[4]
-        if isNote == True:
+        is_note = highlight[4]
+        if is_note:
             aggregated_text += BOLD + "Note: " + BOLD
 
         aggregated_text += text + "\n("

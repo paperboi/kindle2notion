@@ -26,12 +26,14 @@ def test_parse_raw_clippings_text_should_return_a_dict_with_all_the_parsed_infor
                     "11",
                     "111-114",
                     "Tuesday, 22 September 2020 09:23:48 AM",
+                    False,
                 ),
                 (
                     "This is test highlight 2.",
                     "11",
                     "111-114",
                     "Tuesday, 22 September 2020 09:24:04 AM",
+                    False,
                 ),
             ],
         },
@@ -43,12 +45,14 @@ def test_parse_raw_clippings_text_should_return_a_dict_with_all_the_parsed_infor
                     "3",
                     "184-185",
                     "Friday, 30 April 2021 12:31:29 AM",
+                    False,
                 ),
                 (
                     "This is test highlight 4.",
                     "34",
                     "682-684",
                     "Friday, 30 April 2021 03:14:33 PM",
+                    False,
                 ),
             ],
         },
@@ -60,12 +64,14 @@ def test_parse_raw_clippings_text_should_return_a_dict_with_all_the_parsed_infor
                     "22",
                     "559-560",
                     "Saturday, 15 May 2021 10:25:42 PM",
+                    False,
                 ),
                 (
                     "This is test highlight 6.",
                     "22",
                     "564-565",
                     "Saturday, 15 May 2021 10:26:26 PM",
+                    False,
                 ),
             ],
         },
@@ -240,6 +246,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     page = "1"
     location = "100"
     date = datetime(2021, 4, 30, 0, 31, 29)
+    is_note = False
 
     expected = {
         "Relativity": {
@@ -250,6 +257,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
                     "1",
                     "100",
                     datetime(2021, 4, 30, 0, 31, 29),
+                    False,
                 )
             ],
         }
@@ -257,7 +265,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
 
     # When
     actual = _add_parsed_items_to_books_dict(
-        books, title, author, highlight, page, location, date
+        books, title, author, highlight, page, location, date, is_note
     )
 
     # Then
@@ -275,6 +283,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
                     "1",
                     "100",
                     datetime(2021, 4, 30, 0, 31, 29),
+                    False,
                 )
             ],
         }
@@ -285,6 +294,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     page = "2"
     location = "200"
     date = datetime(2021, 5, 1, 0, 31, 29)
+    is_note = False
 
     expected = {
         "Relativity": {
@@ -295,12 +305,14 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
                     "1",
                     "100",
                     datetime(2021, 4, 30, 0, 31, 29),
+                    False,
                 ),
                 (
                     "This is a second highlight.",
                     "2",
                     "200",
                     datetime(2021, 5, 1, 0, 31, 29),
+                    False,
                 ),
             ],
         }
@@ -308,7 +320,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
 
     # When
     actual = _add_parsed_items_to_books_dict(
-        books, title, author, highlight, page, location, date
+        books, title, author, highlight, page, location, date, is_note
     )
 
     # Then

@@ -9,12 +9,14 @@ def test_prepare_aggregated_text_for_one_book_should_return_the_aggregated_text_
             "1",
             "100",
             "Thursday, 29 April 2021 12:31:29 AM",
+            False,
         ),
         (
             "This is a second example highlight.",
             "2",
             "200",
             "Friday, 30 April 2021 12:31:29 AM",
+            False,
         ),
     ]
 
@@ -41,12 +43,14 @@ def test_prepare_aggregated_text_for_one_book_should_return_the_aggregated_text_
             "1",
             "100",
             "Thursday, 29 April 2021 12:31:29 AM",
+            False,
         ),
         (
             "This is a second example highlight.",
             "2",
             "200",
             "Friday, 30 April 2021 12:31:29 AM",
+            False,
         ),
     ]
 
