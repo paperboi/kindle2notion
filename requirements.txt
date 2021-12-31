@@ -1,7 +1,7 @@
 click>=8.0.0
 dateparser>=1.0.0
 DateTime>=4.3
-notion>=0.0.27
+git+https://github.com/jamalex/notion-py.git@refs/pull/352/merge
 python-decouple>=3.3
 requests>=2.25.0
 pathlib
