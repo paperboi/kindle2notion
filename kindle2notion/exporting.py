@@ -1,32 +1,31 @@
 from datetime import datetime
+from operator import contains
 from typing import Dict, List, Tuple
 
-from dateparser import parse
-from notion.block import TextBlock
-from notion.client import NotionClient
-from notion.collection import NotionDate
+import notional
+from notional.query import TextCondition
+from notional import blocks, types
+
 from requests import get
 
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 ITALIC = "*"
-BOLD = "**"
-
-# TODO: Refactor this module
+BOLD = "**"    
 
 
 def export_to_notion(
-    books: Dict,
+    all_books: Dict,
     enable_highlight_date: bool,
     enable_book_cover: bool,
-    notion_token: str,
+    notion_auth_token: str,
     notion_table_id: str,
 ) -> None:
     print("Initiating transfer...\n")
 
-    for title in books:
-        book = books[title]
-        author = book["author"]
-        highlights = book["highlights"]
+    for title in all_books:
+        each_book = all_books[title]
+        author = each_book["author"]
+        highlights = each_book["highlights"]
         highlight_count = len(highlights)
         (
             aggregated_text_from_highlights,
@@ -38,7 +37,7 @@ def export_to_notion(
             highlight_count,
             aggregated_text_from_highlights,
             last_date,
-            notion_token,
+            notion_auth_token,
             notion_table_id,
             enable_book_cover,
         )
@@ -47,7 +46,8 @@ def export_to_notion(
 
 
 def _prepare_aggregated_text_for_one_book(
-    highlights: List, enable_highlight_date: bool
+    highlights: List,
+    enable_highlight_date: bool
 ) -> Tuple[str, str]:
     aggregated_text = ""
     for highlight in highlights:
@@ -68,7 +68,7 @@ def _prepare_aggregated_text_for_one_book(
             aggregated_text += ITALIC + "Date Added: " + date + ITALIC
 
         aggregated_text = aggregated_text.strip() + ")\n\n"
-    last_date = date
+        last_date = date
     return aggregated_text, last_date
 
 
@@ -78,60 +78,69 @@ def _add_book_to_notion(
     highlight_count: int,
     aggregated_text: str,
     last_date: str,
-    notion_token: str,
+    notion_auth_token: str,
     notion_table_id: str,
-    enable_book_cover: bool,
-) -> str:
-    notion_client = NotionClient(token_v2=notion_token)
-    notion_collection_view = notion_client.get_collection_view(notion_table_id)
-    notion_collection_view_rows = notion_collection_view.collection.get_rows()
+    enable_book_cover: bool
+    ):
+    notion = notional.connect(auth=notion_auth_token)
+    last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
 
     title_exists = False
-    if notion_collection_view_rows:
-        for row in notion_collection_view_rows:
-            if title == row.title and author == row.author:
-                title_exists = True
-                row = row
+    query = notion.databases.query(notion_table_id).filter(property="Title", rich_text=TextCondition(equals=title)).limit(1)
+    data = query.first()
 
-                if row.highlights is None:
-                    row.highlights = 0  # to initialize number of highlights as 0
-                elif row.highlights == highlight_count:  # if no change in highlights
-                    return "None to add"
+    if data:
+        title_exists = True
+        block_id = data.id
+        block = notion.pages.retrieve(block_id)
+        if block["Highlights"] == None:
+            block["Highlights"] = types.Number[0]
+        elif block["Highlights"] == highlight_count: # if no change in highlights
+            title_and_author = str(block["Title"]) + " (" + str(block["Author"]) + ")"
+            print(title_and_author)
+            print("-" * len(title_and_author))
+            return "None to add.\n"
 
     title_and_author = title + " (" + str(author) + ")"
     print(title_and_author)
     print("-" * len(title_and_author))
 
     if not title_exists:
-        row = notion_collection_view.collection.add_row()
-        row.title = title
-        row.author = author
-        row.highlights = 0
-
+        new_page = notion.pages.create(
+            parent=notion.databases.retrieve(notion_table_id),
+            properties={
+                "Title": types.Title[title],
+                "Author": types.RichText[author],
+                "Highlights": types.Number[highlight_count],
+                "Last Highlighted": types.Date[last_date.isoformat()],
+                "Last Synced": types.Date[datetime.now().isoformat()]
+            },
+            children=[blocks.Paragraph[aggregated_text]],
+        )
+        block_id = new_page.id
         if enable_book_cover:
-            if row.cover is None:
-                result = _get_book_cover_uri(row.title, row.author)
+            if new_page.cover is None:
+                result = _get_book_cover_uri(title, author)
             if result is not None:
-                row.cover = result
-                print("✓ Added book cover")
+                cover = types.ExternalFile[result]
+                print("✓ Added book cover.")
             else:
-                row.cover = NO_COVER_IMG
+                cover = types.ExternalFile[NO_COVER_IMG]
                 print(
                     "× Book cover couldn't be found. "
                     "Please replace the placeholder image with the original book cover manually."
-                )
+                    )
+            notion.pages.set(new_page, cover=cover)
 
-    parent_page = notion_client.get_block(row.id)
+    block = notion.pages.retrieve(block_id)
+    current_highlight_count = int(str(block["Highlights"]))
+    diff_count = highlight_count - current_highlight_count if highlight_count > current_highlight_count else highlight_count
 
-    # For existing books with new highlights to add
-    for all_blocks in parent_page.children:
-        all_blocks.remove()
-    parent_page.children.add_new(TextBlock, title=aggregated_text)
-    diff_count = highlight_count - row.highlights
-    row.highlights = highlight_count
-    row.last_highlighted = NotionDate(parse(last_date))
-    row.last_synced = NotionDate(datetime.now())
-    message = str(diff_count) + " notes / highlights added successfully\n"
+    block["Highlights"] = types.Number[highlight_count]
+    block["Last Highlighted"] = types.Date[last_date]
+    block["Last Synced"] = types.Date[datetime.now()]
+
+    message = str(diff_count) + " notes/highlights added successfully.\n"
     return message
 
 

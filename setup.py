@@ -11,7 +11,7 @@ with open("requirements-dev.txt", "r", encoding="utf-8") as f:
 
 setup(
     name="kindle2notion",
-    version="0.1.8",
+    version="2.0.0",
     author="Jeffrey Jacob",
     author_email="jeffreysamjacob@gmail.com",
     description="Export all the clippings from your Kindle device to a database in Notion.",
