@@ -17,8 +17,8 @@ def export_to_notion(
     all_books: Dict,
     enable_highlight_date: bool,
     enable_book_cover: bool,
-    notion_auth_token: str,
-    notion_table_id: str,
+    notion_api_auth_token: str,
+    notion_database_id: str,
 ) -> None:
     print("Initiating transfer...\n")
 
@@ -37,8 +37,8 @@ def export_to_notion(
             highlight_count,
             aggregated_text_from_highlights,
             last_date,
-            notion_auth_token,
-            notion_table_id,
+            notion_api_auth_token,
+            notion_database_id,
             enable_book_cover,
         )
         if message != "None to add":
@@ -78,15 +78,15 @@ def _add_book_to_notion(
     highlight_count: int,
     aggregated_text: str,
     last_date: str,
-    notion_auth_token: str,
-    notion_table_id: str,
+    notion_api_auth_token: str,
+    notion_database_id: str,
     enable_book_cover: bool
     ):
-    notion = notional.connect(auth=notion_auth_token)
+    notion = notional.connect(auth=notion_api_auth_token)
     last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
 
     title_exists = False
-    query = notion.databases.query(notion_table_id).filter(property="Title", rich_text=TextCondition(equals=title)).limit(1)
+    query = notion.databases.query(notion_database_id).filter(property="Title", rich_text=TextCondition(equals=title)).limit(1)
     data = query.first()
 
     if data:
@@ -107,7 +107,7 @@ def _add_book_to_notion(
 
     if not title_exists:
         new_page = notion.pages.create(
-            parent=notion.databases.retrieve(notion_table_id),
+            parent=notion.databases.retrieve(notion_database_id),
             properties={
                 "Title": types.Title[title],
                 "Author": types.RichText[author],
