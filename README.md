@@ -121,7 +121,8 @@ You may also avail help with the following command:
    python -m kindle2notion --help
    ```
 
-[**Note:** This code has been tested on a 4th Gen Kindle Paperwhite on both MacOS and Windows.]
+> **NOTE**
+> This code has been tested on a 4th Gen Kindle Paperwhite on both MacOS and Windows.
 
 
 <!-- ROADMAP -->
