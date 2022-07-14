@@ -60,7 +60,7 @@ A key inspiration behind this project was the notes saving feature on Google Pla
 
 
 > **NOTE**
-> Need a step-by-step guide to setting this package up? Click [here](https://www.notion.so/kindle2notion/Kindle2Notion-8a9683c9b19546c3b1cf42a68aceebee) for the full guide. 
+> Need a step-by-step guide to setting this package up? Click [here](https://kindle2notion.notion.site/Kindle2Notion-8a9683c9b19546c3b1cf42a68aceebee) for the full guide. 
 
 To get a local copy up and running follow these simple steps:
 
@@ -80,7 +80,7 @@ To get a local copy up and running follow these simple steps:
     pip install kindle2notion
     ```
 2. Create an integration on Notion.
-      1. Duplicate this [database template](https://www.notion.so/kindle2notion/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your the workspace you want to use for storing your Kindle clippings.
+      1. Duplicate this [database template](https://kindle2notion.notion.site/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your the workspace you want to use for storing your Kindle clippings.
       2. Open _Settings & Members_ from the left navigation bar.
       3. Select the _Integrations_ option listed under _Workspaces_ in the settings modal.
       4. Click on _Develop your own integrations_ to redirect to the integrations page.
