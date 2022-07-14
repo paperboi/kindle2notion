@@ -1,16 +1,18 @@
 from datetime import datetime
-from operator import contains
+from math import ceil
 from typing import Dict, List, Tuple
 
 import notional
 from notional.query import TextCondition
-from notional import blocks, types
+from notional.types import Title, RichText, Number, Date, ExternalFile
+from notional.blocks import TextObject, Paragraph
+from notional.text import Annotations
+
+from more_itertools import grouper
 
 from requests import get
 
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
-ITALIC = "*"
-BOLD = "**"    
 
 
 def export_to_notion(
@@ -25,17 +27,17 @@ def export_to_notion(
     for title in all_books:
         each_book = all_books[title]
         author = each_book["author"]
-        highlights = each_book["highlights"]
-        highlight_count = len(highlights)
+        clippings = each_book["highlights"]
+        clippings_count = len(clippings)
         (
-            aggregated_text_from_highlights,
+            formatted_clippings,
             last_date,
-        ) = _prepare_aggregated_text_for_one_book(highlights, enable_highlight_date)
+        ) = _prepare_aggregated_text_for_one_book(clippings, enable_highlight_date)
         message = _add_book_to_notion(
             title,
             author,
-            highlight_count,
-            aggregated_text_from_highlights,
+            clippings_count,
+            formatted_clippings,
             last_date,
             notion_api_auth_token,
             notion_database_id,
@@ -46,37 +48,40 @@ def export_to_notion(
 
 
 def _prepare_aggregated_text_for_one_book(
-    highlights: List,
+    clippings: List,
     enable_highlight_date: bool
 ) -> Tuple[str, str]:
-    aggregated_text = ""
-    for highlight in highlights:
-        text = highlight[0]
-        page = highlight[1]
-        location = highlight[2]
-        date = highlight[3]
-        isNote = highlight[4]
+    # TODO: Special case for books with len(clippings) >= 100 characters. Character limit in a Paragraph block in Notion is 100
+    formatted_clippings = []
+    for each_clipping in clippings:
+        aggregated_text = ""
+        text = each_clipping[0]
+        page = each_clipping[1]
+        location = each_clipping[2]
+        date = each_clipping[3]
+        isNote = each_clipping[4]
         if isNote == True:
-            aggregated_text += BOLD + "Note: " + BOLD
+            aggregated_text += "> " + "NOTE: \n"
 
-        aggregated_text += text + "\n("
+        aggregated_text += text + "\n* "
         if page != "":
-            aggregated_text += ITALIC + "Page: " + page + ITALIC + "  "
+            aggregated_text += "Page: " + page + ", "
         if location != "":
-            aggregated_text += ITALIC + "Location: " + location + ITALIC + "  "
+            aggregated_text += "Location: " + location
         if enable_highlight_date and (date != ""):
-            aggregated_text += ITALIC + "Date Added: " + date + ITALIC
+            aggregated_text += ", Date Added: " + date
 
-        aggregated_text = aggregated_text.strip() + ")\n\n"
+        aggregated_text = aggregated_text.strip() + "\n\n"
+        formatted_clippings.append(aggregated_text)
         last_date = date
-    return aggregated_text, last_date
+    return formatted_clippings, last_date
 
 
 def _add_book_to_notion(
     title: str,
     author: str,
-    highlight_count: int,
-    aggregated_text: str,
+    clippings_count: int,
+    formatted_clippings: list,
     last_date: str,
     notion_api_auth_token: str,
     notion_database_id: str,
@@ -85,7 +90,10 @@ def _add_book_to_notion(
     notion = notional.connect(auth=notion_api_auth_token)
     last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
 
+    # Condition variables
     title_exists = False
+    current_clippings_count = 0
+
     query = notion.databases.query(notion_database_id).filter(property="Title", rich_text=TextCondition(equals=title)).limit(1)
     data = query.first()
 
@@ -94,8 +102,8 @@ def _add_book_to_notion(
         block_id = data.id
         block = notion.pages.retrieve(block_id)
         if block["Highlights"] == None:
-            block["Highlights"] = types.Number[0]
-        elif block["Highlights"] == highlight_count: # if no change in highlights
+            block["Highlights"] = Number[0]
+        elif block["Highlights"] == clippings_count: # if no change in clippings
             title_and_author = str(block["Title"]) + " (" + str(block["Author"]) + ")"
             print(title_and_author)
             print("-" * len(title_and_author))
@@ -105,43 +113,89 @@ def _add_book_to_notion(
     print(title_and_author)
     print("-" * len(title_and_author))
 
+    # Add a new book to the database
     if not title_exists:
         new_page = notion.pages.create(
             parent=notion.databases.retrieve(notion_database_id),
             properties={
-                "Title": types.Title[title],
-                "Author": types.RichText[author],
-                "Highlights": types.Number[highlight_count],
-                "Last Highlighted": types.Date[last_date.isoformat()],
-                "Last Synced": types.Date[datetime.now().isoformat()]
+                "Title": Title[title],
+                "Author": RichText[author],
+                "Highlights": Number[clippings_count],
+                "Last Highlighted": Date[last_date.isoformat()],
+                "Last Synced": Date[datetime.now().isoformat()]
             },
-            children=[blocks.Paragraph[aggregated_text]],
+            children=[],
         )
+        # page_content = _update_book_with_clippings(formatted_clippings)
+        page_content = Paragraph["".join(formatted_clippings)]
+        notion.blocks.children.append(new_page, page_content)
         block_id = new_page.id
         if enable_book_cover:
+            # Fetch a book cover from Google Books if the cover for the page is not set
             if new_page.cover is None:
                 result = _get_book_cover_uri(title, author)
-            if result is not None:
-                cover = types.ExternalFile[result]
-                print("✓ Added book cover.")
-            else:
-                cover = types.ExternalFile[NO_COVER_IMG]
+            
+            if result is None:
+                # Set the page cover to a placeholder image
+                cover = ExternalFile[NO_COVER_IMG]
                 print(
                     "× Book cover couldn't be found. "
                     "Please replace the placeholder image with the original book cover manually."
                     )
+            else:
+                # Set the page cover to that of the book
+                cover = ExternalFile[result]
+                print("✓ Added book cover.")
+
             notion.pages.set(new_page, cover=cover)
+    else:
+        # update a book that already exists in the database
+        page = notion.pages.retrieve(block_id)
+        # page_content = _update_book_with_clippings(formatted_clippings)
+        page_content = Paragraph["".join(formatted_clippings)]
+        notion.blocks.children.append(page, page_content)
+        # TODO: Delete existing page children (or figure out how to find changes to be made by comparing it with local json file.)
+        current_clippings_count = int(str(page["Highlights"]))
+        page["Highlights"] = Number[clippings_count]
+        page["Last Highlighted"] = Date[last_date.isoformat()]
+        page["Last Synced"] = Date[datetime.now().isoformat()]
 
-    block = notion.pages.retrieve(block_id)
-    current_highlight_count = int(str(block["Highlights"]))
-    diff_count = highlight_count - current_highlight_count if highlight_count > current_highlight_count else highlight_count
 
-    block["Highlights"] = types.Number[highlight_count]
-    block["Last Highlighted"] = types.Date[last_date]
-    block["Last Synced"] = types.Date[datetime.now()]
 
+    # Logging the changes made
+    diff_count = clippings_count - current_clippings_count if clippings_count > current_clippings_count else clippings_count
     message = str(diff_count) + " notes/highlights added successfully.\n"
+
     return message
+
+
+# def _create_rich_text_object(text):
+#     if "Note: " in text:
+#         # Bold text
+#         nested = TextObject._NestedData(content=text)
+#         rich = TextObject(text=nested, plain_text=text, annotations=Annotations(bold=True))
+#     elif any(item in text for item in ["Page: ", "Location: ", "Date Added: "]):
+#         # Italic text
+#         nested = TextObject._NestedData(content=text)
+#         rich = TextObject(text=nested, plain_text=text, annotations=Annotations(italic=True))
+#     else:
+#         # Plain text
+#         nested = TextObject._NestedData(content=text)
+#         rich = TextObject(text=nested, plain_text=text)
+#     return rich
+
+
+# def _update_book_with_clippings(formatted_clippings):
+#     rtf = []
+#     for each_clipping in formatted_clippings:
+#         each_clipping_list = each_clipping.split("*")
+#         each_clipping_list = list(filter(None, each_clipping_list))
+#         for each_line in each_clipping_list:
+#             rtf.append(_create_rich_text_object(each_line))
+#     print(len(rtf))
+#     content = Paragraph._NestedData(rich_text=rtf)
+#     para = Paragraph(paragraph=content)
+#     return para
 
 
 def _get_book_cover_uri(title: str, author: str):
