@@ -8,7 +8,7 @@ from notional.types import Title, RichText, Number, Date, ExternalFile
 from notional.blocks import TextObject, Paragraph
 from notional.text import Annotations
 
-from more_itertools import grouper
+# from more_itertools import grouper
 
 from requests import get
 
