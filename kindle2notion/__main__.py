@@ -1,5 +1,4 @@
 import click
-# from notion.client import NotionClient
 import notional
 import json
 
@@ -23,7 +22,6 @@ from kindle2notion.reading import read_raw_clippings
     help="Set to False if you don't want to store the book cover in Notion.",
 )
 
-
 def main(
     notion_api_auth_token,
     notion_database_id,
@@ -31,16 +29,19 @@ def main(
     enable_highlight_date,
     enable_book_cover,
 ):
-
-    # notion_client = NotionClient(token_v2=notion_api_auth_token)
-    # notion_collection_view = notion_client.get_collection_view(notion_database_id)
     notion = notional.connect(auth=notion_api_auth_token)
     db = notion.databases.retrieve(notion_database_id)
 
     if db:
         print("Notion page is found. Analyzing clippings file...")
+
+        # Open the clippings text file and load it into all_clippings
         all_clippings = read_raw_clippings(clippings_file)
+
+        # Parse all_clippings file and format the content to be sent tp the Notion DB into all_books
         all_books = parse_raw_clippings_text(all_clippings)
+
+        # Export all the contents in all_books into the Notion DB. 
         export_to_notion(
             all_books,
             enable_highlight_date,
@@ -48,9 +49,10 @@ def main(
             notion_api_auth_token,
             notion_database_id,
         )
-        out_file = open("my_kindle_clippings.json", "w")
-        json.dump(db.json, out_file, indent=4)
-        out_file.close()
+
+        with open("my_kindle_clippings.json", "w") as out_file:
+            json.dump(all_books, out_file, indent=4)
+
         print("Transfer complete... Exiting script...")
     else:
         print("Notion page not found! Please check whether the Notion database ID is assigned properly.")
