@@ -3,7 +3,7 @@ from typing import Dict, List, Tuple
 
 from dateparser import parse
 
-BOOKS_WO_AUTHORS=[]
+BOOKS_WO_AUTHORS = []
 
 ACADEMIC_TITLES = [
     "A.A.",
@@ -172,7 +172,9 @@ def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
     else:
         if title not in BOOKS_WO_AUTHORS:
             BOOKS_WO_AUTHORS.append(title)
-            print(f"{title} - No author found. You can manually add the author in the Notion database.")
+            print(
+                f"{title} - No author found. You can manually add the author in the Notion database."
+            )
 
     title = raw_clipping_list[0].replace(author, "").strip().replace(" ()", "")
 

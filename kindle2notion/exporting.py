@@ -48,8 +48,7 @@ def export_to_notion(
 
 
 def _prepare_aggregated_text_for_one_book(
-    clippings: List,
-    enable_highlight_date: bool
+    clippings: List, enable_highlight_date: bool
 ) -> Tuple[str, str]:
     # TODO: Special case for books with len(clippings) >= 100 characters. Character limit in a Paragraph block in Notion is 100
     formatted_clippings = []
@@ -85,8 +84,8 @@ def _add_book_to_notion(
     last_date: str,
     notion_api_auth_token: str,
     notion_database_id: str,
-    enable_book_cover: bool
-    ):
+    enable_book_cover: bool,
+):
     notion = notional.connect(auth=notion_api_auth_token)
     last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
 
@@ -94,7 +93,11 @@ def _add_book_to_notion(
     title_exists = False
     current_clippings_count = 0
 
-    query = notion.databases.query(notion_database_id).filter(property="Title", rich_text=TextCondition(equals=title)).limit(1)
+    query = (
+        notion.databases.query(notion_database_id)
+        .filter(property="Title", rich_text=TextCondition(equals=title))
+        .limit(1)
+    )
     data = query.first()
 
     if data:
@@ -103,7 +106,7 @@ def _add_book_to_notion(
         block = notion.pages.retrieve(block_id)
         if block["Highlights"] == None:
             block["Highlights"] = Number[0]
-        elif block["Highlights"] == clippings_count: # if no change in clippings
+        elif block["Highlights"] == clippings_count:  # if no change in clippings
             title_and_author = str(block["Title"]) + " (" + str(block["Author"]) + ")"
             print(title_and_author)
             print("-" * len(title_and_author))
@@ -122,7 +125,7 @@ def _add_book_to_notion(
                 "Author": RichText[author],
                 "Highlights": Number[clippings_count],
                 "Last Highlighted": Date[last_date.isoformat()],
-                "Last Synced": Date[datetime.now().isoformat()]
+                "Last Synced": Date[datetime.now().isoformat()],
             },
             children=[],
         )
@@ -134,14 +137,14 @@ def _add_book_to_notion(
             # Fetch a book cover from Google Books if the cover for the page is not set
             if new_page.cover is None:
                 result = _get_book_cover_uri(title, author)
-            
+
             if result is None:
                 # Set the page cover to a placeholder image
                 cover = ExternalFile[NO_COVER_IMG]
                 print(
                     "× Book cover couldn't be found. "
                     "Please replace the placeholder image with the original book cover manually."
-                    )
+                )
             else:
                 # Set the page cover to that of the book
                 cover = ExternalFile[result]
@@ -160,10 +163,12 @@ def _add_book_to_notion(
         page["Last Highlighted"] = Date[last_date.isoformat()]
         page["Last Synced"] = Date[datetime.now().isoformat()]
 
-
-
     # Logging the changes made
-    diff_count = clippings_count - current_clippings_count if clippings_count > current_clippings_count else clippings_count
+    diff_count = (
+        clippings_count - current_clippings_count
+        if clippings_count > current_clippings_count
+        else clippings_count
+    )
     message = str(diff_count) + " notes/highlights added successfully.\n"
 
     return message

@@ -21,7 +21,6 @@ from kindle2notion.reading import read_raw_clippings
     default=True,
     help="Set to False if you don't want to store the book cover in Notion.",
 )
-
 def main(
     notion_api_auth_token,
     notion_database_id,
@@ -41,7 +40,7 @@ def main(
         # Parse all_clippings file and format the content to be sent tp the Notion DB into all_books
         all_books = parse_raw_clippings_text(all_clippings)
 
-        # Export all the contents in all_books into the Notion DB. 
+        # Export all the contents in all_books into the Notion DB.
         export_to_notion(
             all_books,
             enable_highlight_date,
@@ -55,7 +54,10 @@ def main(
 
         print("Transfer complete... Exiting script...")
     else:
-        print("Notion page not found! Please check whether the Notion database ID is assigned properly.")
+        print(
+            "Notion page not found! Please check whether the Notion database ID is assigned properly."
+        )
+
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,7 @@
 from pathlib import Path
 from kindle2notion.reading import read_raw_clippings
 
+
 def test_read_raw_clippings_should_return_all_clippings_data_as_string():
     # Given
     test_clippings_file_path = (
