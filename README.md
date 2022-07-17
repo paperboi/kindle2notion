@@ -32,7 +32,7 @@
 - [About The Project](#about-the-project)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+  - [Installation & Setup](#installation--setup)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -52,7 +52,7 @@ A key inspiration behind this project was the notes saving feature on Google Pla
 
 **Intended for**
 - Avid readers who would want to browse through their prior reads and highlights anytime anywhere.
-- For those who take notes alongside their highlights.
+- For those who like to take notes alongside their highlights.
 
 
 <!-- GETTING STARTED -->
@@ -60,9 +60,9 @@ A key inspiration behind this project was the notes saving feature on Google Pla
 
 
 > **NOTE**
-> Need a step-by-step guide to setting this package up? Click [here](https://www.notion.so/kindle2notion/Kindle2Notion-8a9683c9b19546c3b1cf42a68aceebee) for the full guide. 
+> Need a step-by-step guide to setting this package up? Click [here](https://kindle2notion.notion.site/Kindle2Notion-8a9683c9b19546c3b1cf42a68aceebee) for the full guide. 
 
-To get a local copy up and running follow these simple steps.
+To get a local copy up and running follow these simple steps:
 
 ### Prerequisites
 
@@ -70,48 +70,50 @@ To get a local copy up and running follow these simple steps.
 * A Notion account to store your links.
 * Python 3 on your system to run the code.
 
-### Installation
+### Installation & Setup
+
+> **NOTE** 
+> As of 10-08-2022, the latest update to this package relies on the offical Notion API for sending API requests. This requires you to create an integration token from [here](https://www.notion.so/my-integrations). For old users, you'd have to switch to this method as well since `notion-py` isn't being maintained anymore.
  
 1. Install the library.
     ```sh
     pip install kindle2notion
     ```
-2. Export your Kindle highlights and notes to Notion!
-   - On MacOS and UNIX,
-   ```sh
-   kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
-   ```
-   - On Windows
-   ```sh
-   python -m kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
-   ```
-
+2. Create an integration on Notion.
+      1. Duplicate this [database template](https://kindle2notion.notion.site/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your the workspace you want to use for storing your Kindle clippings.
+      2. Open _Settings & Members_ from the left navigation bar.
+      3. Select the _Integrations_ option listed under _Workspaces_ in the settings modal.
+      4. Click on _Develop your own integrations_ to redirect to the integrations page.
+      5. On the integrations page, select the _New integration_ option and enter the name of the integration and the workspace you want to use it with. Hit submit and your internal integration token will be generated.
+3. Go back to your database page and click on the _Share_ button on the top right corner. Use the selector to find your integration by its name and then click _Invite_. Your integration now has the requested permissions on the new database. 
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
 1. Plug in your Kindle device to your PC.
-   
-2. Duplicate this [database template](https://www.notion.so/kindle2notion/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your Notion workspace.
-   
-3. Find your Notion token. Since this code requires access of non-public pages, an authentication token from your Notion page is required. This token is stored in the `token_v2` cookie. This can be found in the *Storage* tab of your browser's developer tools.
-   - For Chrome: Open Developer Tools (*Menu > Other tools > Developer Tools*), navigate to Application tab and go to *Storage\Cookies* to find the token listed next to *tokenv2_*.
     
-4. Find your Notion table ID: it's simply the URL of the database you have copied to your workspace.  
-   
-5. You may modify some default parameters of the command-line with the following options of the CLI:
+2. You need the following three arguments in hand before running the code:
+   1. Take `your_notion_auth_token` from the secret key bearer token provided at 
+   2. Find `your_notion_database_id` from the URL of the database you have copied to your workspace. For reference,
+      ```
+      https://www.notion.so/myworkspace/a8aec43384f447ed84390e8e42c2e089?v=...
+                                        |--------- Database ID --------|
+      ```
+   3. `your_kindle_clippings_file` is the path to your `My Clippings File.txt` on your Kindle.
+
+3. Additionally, you may modify some default parameters of the command-line with the following options of the CLI:
    - ```--enable_highlight_date```  Set to False if you don't want to see the "Date Added" information in Notion.
    - ```--enable_book_cover```      Set to False if you don't want to store the book cover in Notion.
     
-6. Export your Kindle highlights and notes to Notion!
+4. Export your Kindle highlights and notes to Notion!
    - On MacOS and UNIX,
    ```sh
-   kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
+   kindle2notion 'your_notion_auth_token' 'your_notion_table_id' 'your_kindle_clippings_file'
    ```
    - On Windows
    ```sh
-   python -m kindle2notion 'your_notion_token' 'your_notion_table_id' 'your_kindle_clippings_file'
+   python -m kindle2notion 'your_notion_auth_token' 'your_notion_table_id' 'your_kindle_clippings_file'
    ```
 You may also avail help with the following command:
    ```sh
@@ -119,7 +121,8 @@ You may also avail help with the following command:
    python -m kindle2notion --help
    ```
 
-[**Note:** This code has been tested on a 4th Gen Kindle Paperwhite on both MacOS and Windows.]
+> **NOTE**
+> This code has been tested on a 4th Gen Kindle Paperwhite on both MacOS and Windows.
 
 
 <!-- ROADMAP -->

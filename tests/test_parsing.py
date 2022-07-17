@@ -5,7 +5,7 @@ from kindle2notion.parsing import (
     parse_raw_clippings_text,
     _parse_author_and_title,
     _parse_page_location_date_and_note,
-    _add_parsed_items_to_books_dict,
+    _add_parsed_items_to_all_books_dict,
 )
 from kindle2notion.reading import read_raw_clippings
 
@@ -91,6 +91,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_the_
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("Albert Einstein", "Relativity")
 
@@ -108,6 +109,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_the_
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("Albert Einstein", "Relativity")
 
@@ -125,6 +127,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_ther
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("Voltaire (François-Marie Arouet)", "Candide")
 
@@ -142,6 +145,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_ther
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("Voltaire (François-Marie Arouet)", "The Age of Louis XIV")
 
@@ -159,6 +163,7 @@ def test_parse_author_and_title_case_should_parse_the_author_and_title_when_ther
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("Ellen Raskin", "The Mysterious Disappearance of Leon (I Mean Noel)")
 
@@ -176,6 +181,7 @@ def test_parse_page_location_date_and_note_should_parse_the_page_location_and_da
         "- Your Highlight on page 3 | Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("3", "184-185", "Friday, 30 April 2021 12:31:29 AM", False)
 
@@ -193,6 +199,7 @@ def test_parse_page_location_date_and_note_should_parse_the_page_and_location_wh
         "- Your Highlight on page 3 | Location 184-185",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("3", "184-185", "", False)
 
@@ -210,6 +217,7 @@ def test_parse_page_location_date_and_note_should_parse_the_location_and_date_wh
         "Location 184-185 | Added on Friday, April 30, 2021 12:31:29 AM",
         "",
         "This is a test highlight.",
+        False,
     ]
     expected = ("", "184-185", "Friday, 30 April 2021 12:31:29 AM", False)
 
@@ -264,7 +272,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     }
 
     # When
-    actual = _add_parsed_items_to_books_dict(
+    actual = _add_parsed_items_to_all_books_dict(
         books, title, author, highlight, page, location, date, is_note
     )
 
