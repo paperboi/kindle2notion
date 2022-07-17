@@ -58,8 +58,8 @@ def _prepare_aggregated_text_for_one_book(
         page = each_clipping[1]
         location = each_clipping[2]
         date = each_clipping[3]
-        isNote = each_clipping[4]
-        if isNote == True:
+        is_note = each_clipping[4]
+        if is_note == True:
             aggregated_text += "> " + "NOTE: \n"
 
         aggregated_text += text + "\n* "

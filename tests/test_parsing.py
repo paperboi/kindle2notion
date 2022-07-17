@@ -254,7 +254,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     page = "1"
     location = "100"
     date = datetime(2021, 4, 30, 0, 31, 29)
-    isNote = False
+    is_note = False
 
     expected = {
         "Relativity": {
@@ -273,14 +273,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
 
     # When
     actual = _add_parsed_items_to_all_books_dict(
-        books,
-        title,
-        author,
-        highlight,
-        page,
-        location,
-        date,
-        isNote,
+        books, title, author, highlight, page, location, date, is_note
     )
 
     # Then
@@ -309,7 +302,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     page = "2"
     location = "200"
     date = datetime(2021, 5, 1, 0, 31, 29)
-    isNote = False
+    is_note = False
 
     expected = {
         "Relativity": {
@@ -334,15 +327,8 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     }
 
     # When
-    actual = _add_parsed_items_to_all_books_dict(
-        books,
-        title,
-        author,
-        highlight,
-        page,
-        location,
-        date,
-        isNote,
+    actual = _add_parsed_items_to_books_dict(
+        books, title, author, highlight, page, location, date, is_note
     )
 
     # Then

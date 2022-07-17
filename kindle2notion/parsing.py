@@ -93,13 +93,13 @@ def parse_raw_clippings_text(raw_clippings_text: str) -> Dict:
 
         if _is_valid_clipping(raw_clipping_list):
             author, title = _parse_author_and_title(raw_clipping_list)
-            page, location, date, isNote = _parse_page_location_date_and_note(
+            page, location, date, is_note = _parse_page_location_date_and_note(
                 raw_clipping_list
             )
             highlight = raw_clipping_list[3]
 
             all_books = _add_parsed_items_to_all_books_dict(
-                all_books, title, author, highlight, page, location, date, isNote
+                all_books, title, author, highlight, page, location, date, is_note
             )
         else:
             passed_clippings_count += 1
@@ -125,12 +125,12 @@ def _parse_page_location_date_and_note(
     second_line = raw_clipping_list[1]
     second_line_as_list = second_line.strip().split(" | ")
     page = location = date = ""
-    isNote = False
+    is_note = False
 
     for element in second_line_as_list:
         element = element.lower()
         if "note" in element:
-            isNote = True
+            is_note = True
         if "page" in element:
             page = element[element.find("page") :].replace("page", "").strip()
         if "location" in element:
@@ -143,7 +143,7 @@ def _parse_page_location_date_and_note(
             )
             date = date.strftime("%A, %d %B %Y %I:%M:%S %p")
 
-    return page, location, date, isNote
+    return page, location, date, is_note
 
 
 def _add_parsed_items_to_all_books_dict(
@@ -154,11 +154,11 @@ def _add_parsed_items_to_all_books_dict(
     page: str,
     location: str,
     date: str,
-    isNote: bool,
+    is_note: bool,
 ) -> Dict:
     if title not in all_books:
         all_books[title] = {"author": author, "highlights": []}
-    all_books[title]["highlights"].append((highlight, page, location, date, isNote))
+    all_books[title]["highlights"].append((highlight, page, location, date, is_note))
     return all_books
 
 
