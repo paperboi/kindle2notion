@@ -80,7 +80,7 @@ To get a local copy up and running follow these simple steps:
     pip install kindle2notion
     ```
 2. Create an integration on Notion.
-      1. Duplicate this [database template](https://kindle2notion.notion.site/6d26062e3bb04dd89b988806978c1fe7?v=0d394a8162cc481280966b35a37465c2) to your the workspace you want to use for storing your Kindle clippings.
+      1. Duplicate this [database template](https://www.notion.so/aea4216c8a4b4269b43c8d4cd7fb9ad2?v=4cbb5a5c6cbb45f6910e606a144d1d79) to your the workspace you want to use for storing your Kindle clippings.
       2. Open _Settings & Members_ from the left navigation bar.
       3. Select the _Integrations_ option listed under _Workspaces_ in the settings modal.
       4. Click on _Develop your own integrations_ to redirect to the integrations page.
