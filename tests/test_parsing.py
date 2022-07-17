@@ -327,7 +327,7 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
     }
 
     # When
-    actual = _add_parsed_items_to_books_dict(
+    actual = _add_parsed_items_to_all_books_dict(
         books, title, author, highlight, page, location, date, is_note
     )
 
