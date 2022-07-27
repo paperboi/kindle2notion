@@ -74,7 +74,7 @@ To get a local copy up and running follow these simple steps:
 ### Installation & Setup
 
 > **NOTE** 
-> As of 10-08-2022, the latest update to this package relies on the offical Notion API for sending API requests. This requires you to create an integration token from [here](https://www.notion.so/my-integrations). For old users, you'd have to switch to this method as well since `notion-py` isn't being maintained anymore.
+> As of 10-07-2022, the latest update to this package relies on the offical Notion API for sending API requests. This requires you to create an integration token from [here](https://www.notion.so/my-integrations). For old users, you'd have to switch to this method as well since `notion-py` isn't being maintained anymore.
  
 1. Install the library.
     ```sh
