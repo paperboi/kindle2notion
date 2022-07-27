@@ -1,4 +1,4 @@
-import re
+from re import findall
 from typing import Dict, List, Tuple
 
 from dateparser import parse
@@ -166,8 +166,8 @@ def _parse_raw_author_and_title(raw_clipping_list: List) -> Tuple[str, str]:
     author = ""
     title = raw_clipping_list[0]
 
-    if re.findall(r"\(.*?\)", raw_clipping_list[0]):
-        author = (re.findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
+    if findall(r"\(.*?\)", raw_clipping_list[0]):
+        author = (findall(r"\(.*?\)", raw_clipping_list[0]))[-1]
         author = author.removeprefix("(").removesuffix(")")
     else:
         if title not in BOOKS_WO_AUTHORS:

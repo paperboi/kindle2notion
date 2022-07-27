@@ -1,16 +1,16 @@
 from datetime import datetime
-from math import ceil
 from typing import Dict, List, Tuple
 
 import notional
+from notional.blocks import Paragraph, TextObject
 from notional.query import TextCondition
-from notional.types import Title, RichText, Number, Date, ExternalFile
-from notional.blocks import TextObject, Paragraph
-from notional.text import Annotations
+from notional.types import Date, ExternalFile, Number, RichText, Title
+from requests import get
+
+# from notional.text import Annotations
 
 # from more_itertools import grouper
 
-from requests import get
 
 NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 

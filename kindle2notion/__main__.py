@@ -1,6 +1,7 @@
+import json
+
 import click
 import notional
-import json
 
 from kindle2notion.exporting import export_to_notion
 from kindle2notion.parsing import parse_raw_clippings_text

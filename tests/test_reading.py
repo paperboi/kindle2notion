@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from kindle2notion.reading import read_raw_clippings
 
 
