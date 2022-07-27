@@ -18,6 +18,7 @@
   <a href="https://www.buymeacoffee.com/jeffreyjacob" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 54px;" height="54"></a>
 </p>
 
+[![Downloads][downloads-shield]][downloads-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -159,7 +160,8 @@ Distributed under the MIT License. See [LICENSE][license-url] for more informati
 Jeffrey Jacob ([Twitter](https://twitter.com/jeffreysamjacob) | [Email](mailto:jeffreysamjacob@gmail.com) | [LinkedIn](https://www.linkedin.com/in/jeffreysamjacob/))
 
 
-
+[downloads-shield]: https://pepy.tech/badge/kindle2notion
+[downloads-url]: https://pepy.tech/project/kindle2notion
 [contributors-shield]: https://img.shields.io/github/contributors/paperboi/Kindle2Notion.svg?style=flat-square
 [contributors-url]: https://github.com/paperboi/Kindle2Notion/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/paperboi/Kindle2Notion.svg?style=flat-square
