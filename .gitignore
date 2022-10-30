@@ -156,7 +156,7 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
-
+.code-workspace
 # custom project files
 MyClippings.txt
 dist/

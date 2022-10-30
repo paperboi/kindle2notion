@@ -95,7 +95,7 @@ To get a local copy up and running follow these simple steps:
 1. Plug in your Kindle device to your PC.
     
 2. You need the following three arguments in hand before running the code:
-   1. Take `your_notion_auth_token` from the secret key bearer token provided at 
+   1. Take `your_notion_auth_token` from the secret key bearer token provided.
    2. Find `your_notion_database_id` from the URL of the database you have copied to your workspace. For reference,
       ```
       https://www.notion.so/myworkspace/a8aec43384f447ed84390e8e42c2e089?v=...
