@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Dict, List, Tuple
 
 import notional
-from notional.blocks import Paragraph, TextObject
+from notional.blocks import Paragraph, TextObject, Quote
 from notional.query import TextCondition
 from notional.types import Date, ExternalFile, Number, RichText, Title
 from requests import get
@@ -17,8 +17,10 @@ NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 
 def export_to_notion(
     all_books: Dict,
+    enable_location: bool,
     enable_highlight_date: bool,
     enable_book_cover: bool,
+    separate_blocks: bool,
     notion_api_auth_token: str,
     notion_database_id: str,
 ) -> None:
@@ -32,7 +34,7 @@ def export_to_notion(
         (
             formatted_clippings,
             last_date,
-        ) = _prepare_aggregated_text_for_one_book(clippings, enable_highlight_date)
+        ) = _prepare_aggregated_text_for_one_book(clippings, enable_location, enable_highlight_date)
         message = _add_book_to_notion(
             title,
             author,
@@ -42,13 +44,14 @@ def export_to_notion(
             notion_api_auth_token,
             notion_database_id,
             enable_book_cover,
+            separate_blocks,
         )
         if message != "None to add":
             print("✓", message)
 
 
 def _prepare_aggregated_text_for_one_book(
-    clippings: List, enable_highlight_date: bool
+        clippings: List, enable_location: bool, enable_highlight_date: bool
 ) -> Tuple[str, str]:
     # TODO: Special case for books with len(clippings) >= 100 characters. Character limit in a Paragraph block in Notion is 100
     formatted_clippings = []
@@ -62,11 +65,12 @@ def _prepare_aggregated_text_for_one_book(
         if is_note == True:
             aggregated_text += "> " + "NOTE: \n"
 
-        aggregated_text += text + "\n* "
-        if page != "":
-            aggregated_text += "Page: " + page + ", "
-        if location != "":
-            aggregated_text += "Location: " + location
+        aggregated_text += text + "\n"
+        if enable_location:
+            if page != "":
+                aggregated_text += "Page: " + page + ", "
+            if location != "":
+                aggregated_text += "Location: " + location
         if enable_highlight_date and (date != ""):
             aggregated_text += ", Date Added: " + date
 
@@ -85,6 +89,7 @@ def _add_book_to_notion(
     notion_api_auth_token: str,
     notion_database_id: str,
     enable_book_cover: bool,
+    separate_blocks: bool,
 ):
     notion = notional.connect(auth=notion_api_auth_token)
     last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
@@ -130,8 +135,16 @@ def _add_book_to_notion(
             children=[],
         )
         # page_content = _update_book_with_clippings(formatted_clippings)
-        page_content = Paragraph["".join(formatted_clippings)]
-        notion.blocks.children.append(new_page, page_content)
+
+
+        if separate_blocks:
+            for formatted_clipping in formatted_clippings:
+                page_content = Quote[formatted_clipping.strip()]
+                notion.blocks.children.append(new_page, page_content)
+        else:
+            page_content = Paragraph["".join(formatted_clippings)]
+            notion.blocks.children.append(new_page, page_content)
+
         block_id = new_page.id
         if enable_book_cover:
             # Fetch a book cover from Google Books if the cover for the page is not set
