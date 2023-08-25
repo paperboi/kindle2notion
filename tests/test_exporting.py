@@ -73,7 +73,7 @@ def test_prepare_aggregated_text_for_one_book_should_return_the_aggregated_text_
     assert expected == actual
 
 
-def test_when_date_is_not_ampm_format_then_aggregated_text_should_return_date():
+def test_when_date_is_not_ampm_format_then_aggregated_text_should_return_appropiate_date():
     # Given
     highlights = [
         (
@@ -107,3 +107,7 @@ def test_when_date_is_not_ampm_format_then_aggregated_text_should_return_date():
     print(actual)
     # Then
     assert expected == actual
+
+
+def test_when_date_is_not_ampm_format_then_aggregated_text_should_not_give_valueerror():
+    pass

@@ -126,7 +126,8 @@ def _parse_page_location_date_and_note(
     second_line_as_list = second_line.strip().split(" | ")
     page = location = date = ""
     is_note = False
-
+    # TODO: Handle multi-language through: element in Pages.ENUM.values
+    # one enum for each of notes, location, pages, added on that contains language versions
     for element in second_line_as_list:
         element = element.lower()
         if "note" in element:
@@ -141,6 +142,7 @@ def _parse_page_location_date_and_note(
             date = parse(
                 element[element.find("added on") :].replace("added on", "").strip()
             )
+            # TODO: Handle different format
             date = date.strftime("%A, %d %B %Y %I:%M:%S %p")
 
     return page, location, date, is_note
