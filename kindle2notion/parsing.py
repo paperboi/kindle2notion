@@ -4,8 +4,8 @@ from typing import Dict, List, Tuple
 
 from dateparser import parse
 
-from kindle2notion.parsing.word_detector import WordDetector
-from kindle2notion.parsing.enums import NoteEnum, PageEnum, LocationEnum, DateAddedEnum, Locale, Word
+from kindle2notion.languages.word_detector import WordDetector
+from kindle2notion.languages.enums import Locale, Word
 
 BOOKS_WO_AUTHORS = []
 

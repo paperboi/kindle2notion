@@ -1,6 +1,6 @@
 from typing import List
 
-from kindle2notion.parsing.enums import Word, Locale
+from kindle2notion.languages.enums import Word, Locale
 
 
 class WordDetector:
