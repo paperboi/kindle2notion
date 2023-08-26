@@ -26,12 +26,12 @@ class Word(Enum):
     }
     DATE_ADDED = {
         Locale.ENGLISH: "added on",
-        Locale.SPANISH: "añadido",
+        Locale.SPANISH: "añadido el",
     }
     # Date formats also depend on language
     DATE_FORMAT = {
         Locale.ENGLISH: "%A, %d %B %Y %I:%M:%S %p",
-        Locale.SPANISH: "%A, %d %B %Y %I:%M:%S",
+        Locale.SPANISH: "%A, %d %B %Y %H:%M:%S",
     }
 
     def __str__(self, language=Locale.ENGLISH):

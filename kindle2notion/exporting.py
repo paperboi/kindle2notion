@@ -87,7 +87,7 @@ def _add_book_to_notion(
         enable_book_cover: bool,
 ):
     notion = notional.connect(auth=notion_api_auth_token)
-    last_date = get_last_date_from_string(last_date_string)
+    last_date = __get_last_date_from_string(last_date_string)
 
     # Condition variables
     title_exists = False
@@ -174,7 +174,7 @@ def _add_book_to_notion(
     return message
 
 
-def get_last_date_from_string(last_date_string: str) -> datetime:
+def __get_last_date_from_string(last_date_string: str) -> datetime:
     if not last_date_string:
         return datetime.now()
     try:

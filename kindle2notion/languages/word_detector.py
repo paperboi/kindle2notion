@@ -14,11 +14,11 @@ class WordDetector:
                 self.language_words[lang].add(word.value[lang])
 
     def detect(self, text):
-        text_words = set(text.split())
         scores = {lang: 0 for lang in self.languages}
-
         for lang, words in self.language_words.items():
-            matches = text_words & words
-            scores[lang] += len(matches)
-
+            scores[lang] = sum([len(word) for word in words if self.has_word(text, word)])
         return max(scores, key=scores.get)
+
+    def has_word(self, text, word):
+        return word.lower() in text.lower()
+

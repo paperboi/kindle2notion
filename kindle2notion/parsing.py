@@ -142,8 +142,9 @@ def _parse_page_location_date_and_note(
         if is_word_in_element(element, language, Word.LOCATION):
             location = _parse_word_from_element(element, language, Word.LOCATION)
         if is_word_in_element(element, language, Word.DATE_ADDED):
+            date_string = _parse_word_from_element(element, language, Word.DATE_ADDED)
             date_parsed: datetime = parse(
-                _parse_word_from_element(element, language, Word.DATE_ADDED)
+                date_string, languages=[language.value for language in Locale]
             )
             date = date_parsed.strftime(Word.DATE_FORMAT.value[language])
 
