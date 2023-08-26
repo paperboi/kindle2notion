@@ -1,7 +1,11 @@
+from datetime import datetime
 from re import findall
 from typing import Dict, List, Tuple
 
 from dateparser import parse
+
+from kindle2notion.languages.word_detector import WordDetector
+from kindle2notion.languages.enums import Locale, Word
 
 BOOKS_WO_AUTHORS = []
 
@@ -80,6 +84,8 @@ ACADEMIC_TITLES = [
 
 DELIMITERS = ["; ", " & ", " and "]
 
+WORD_DETECTOR = WordDetector([language for language in Locale])
+
 
 def parse_raw_clippings_text(raw_clippings_text: str) -> Dict:
     raw_clippings_list = raw_clippings_text.split("==========")
@@ -126,24 +132,32 @@ def _parse_page_location_date_and_note(
     second_line_as_list = second_line.strip().split(" | ")
     page = location = date = ""
     is_note = False
-
     for element in second_line_as_list:
         element = element.lower()
-        if "note" in element:
+        language: Locale = WORD_DETECTOR.detect(element)
+        if Word.NOTE.value[language] in element:
             is_note = True
-        if "page" in element:
-            page = element[element.find("page") :].replace("page", "").strip()
-        if "location" in element:
-            location = (
-                element[element.find("location") :].replace("location", "").strip()
+        if is_word_in_element(element, language, Word.PAGE):
+            page = _parse_word_from_element(element, language, Word.PAGE)
+        if is_word_in_element(element, language, Word.LOCATION):
+            location = _parse_word_from_element(element, language, Word.LOCATION)
+        if is_word_in_element(element, language, Word.DATE_ADDED):
+            date_string = _parse_word_from_element(element, language, Word.DATE_ADDED)
+            date_parsed: datetime = parse(
+                date_string, languages=[language.value for language in Locale]
             )
-        if "added on" in element:
-            date = parse(
-                element[element.find("added on") :].replace("added on", "").strip()
-            )
-            date = date.strftime("%A, %d %B %Y %I:%M:%S %p")
+            date = date_parsed.strftime(Word.DATE_FORMAT.value[language])
 
     return page, location, date, is_note
+
+
+def is_word_in_element(element: str, language: Locale, word: Word):
+    return word.value[language] in element
+
+
+def _parse_word_from_element(element: str, language: Locale, word: Word):
+    word_value_in_language = word.value[language]
+    return element[element.find(word_value_in_language):].replace(word_value_in_language, "").strip()
 
 
 def _add_parsed_items_to_all_books_dict(

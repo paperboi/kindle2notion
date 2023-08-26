@@ -16,11 +16,11 @@ NO_COVER_IMG = "https://via.placeholder.com/150x200?text=No%20Cover"
 
 
 def export_to_notion(
-    all_books: Dict,
-    enable_highlight_date: bool,
-    enable_book_cover: bool,
-    notion_api_auth_token: str,
-    notion_database_id: str,
+        all_books: Dict,
+        enable_highlight_date: bool,
+        enable_book_cover: bool,
+        notion_api_auth_token: str,
+        notion_database_id: str,
 ) -> None:
     print("Initiating transfer...\n")
 
@@ -48,7 +48,7 @@ def export_to_notion(
 
 
 def _prepare_aggregated_text_for_one_book(
-    clippings: List, enable_highlight_date: bool
+        clippings: List, enable_highlight_date: bool
 ) -> Tuple[str, str]:
     # TODO: Special case for books with len(clippings) >= 100 characters. Character limit in a Paragraph block in Notion is 100
     formatted_clippings = []
@@ -77,17 +77,17 @@ def _prepare_aggregated_text_for_one_book(
 
 
 def _add_book_to_notion(
-    title: str,
-    author: str,
-    clippings_count: int,
-    formatted_clippings: list,
-    last_date: str,
-    notion_api_auth_token: str,
-    notion_database_id: str,
-    enable_book_cover: bool,
+        title: str,
+        author: str,
+        clippings_count: int,
+        formatted_clippings: list,
+        last_date_string: str,
+        notion_api_auth_token: str,
+        notion_database_id: str,
+        enable_book_cover: bool,
 ):
     notion = notional.connect(auth=notion_api_auth_token)
-    last_date = datetime.strptime(last_date, "%A, %d %B %Y %I:%M:%S %p")
+    last_date = __get_last_date_from_string(last_date_string)
 
     # Condition variables
     title_exists = False
@@ -173,6 +173,15 @@ def _add_book_to_notion(
 
     return message
 
+
+def __get_last_date_from_string(last_date_string: str) -> datetime:
+    if not last_date_string:
+        return datetime.now()
+    try:
+        return datetime.strptime(last_date_string, "%A, %d %B %Y %I:%M:%S %p")
+    except ValueError:
+        # Datetime format is not English, retrying with non AM-PM format
+        return datetime.strptime(last_date_string, "%A, %d %B %Y %H:%M:%S")
 
 # def _create_rich_text_object(text):
 #     if "Note: " in text:

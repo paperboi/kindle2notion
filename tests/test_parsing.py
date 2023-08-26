@@ -333,3 +333,20 @@ def test_add_parsed_items_to_books_dict_should_add_the_parsed_items_when_the_boo
 
     # Then
     assert expected == actual
+
+def test_parse_date_when_format_does_not_include_am_pm():
+    # Given
+    raw_clipping_list = [
+        "Relativity (Einstein, Albert)",
+        "- La subrayado en la posición 558-560 | Añadido el viernes, 25 de agosto de 2023 7:28:38",
+        "",
+        "This is a test highlight.",
+        False,
+    ]
+    expected = ("3", "", "Friday, 30 April 2021 12:31:29 AM", False)
+
+    # When
+    actual = _parse_page_location_date_and_note(raw_clipping_list)
+
+    # Then
+    assert expected == actual
