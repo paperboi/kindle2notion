@@ -181,7 +181,7 @@ def __get_last_date_from_string(last_date_string: str) -> datetime:
         return datetime.strptime(last_date_string, "%A, %d %B %Y %I:%M:%S %p")
     except ValueError:
         # Datetime format is not English, retrying with non AM-PM format
-        return datetime.strptime(last_date_string, "%A, %d %B %Y %I:%M:%S")
+        return datetime.strptime(last_date_string, "%A, %d %B %Y %H:%M:%S")
 
 # def _create_rich_text_object(text):
 #     if "Note: " in text:
