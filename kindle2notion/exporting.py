@@ -131,7 +131,19 @@ def _add_book_to_notion(
         )
         # page_content = _update_book_with_clippings(formatted_clippings)
         page_content = Paragraph["".join(formatted_clippings)]
-        notion.blocks.children.append(new_page, page_content)
+        page_content_text_length: int = len(page_content.paragraph.rich_text)
+        MAX_LENGTH = 100
+        # Handles notion limitation
+        if page_content_text_length > MAX_LENGTH:
+            original_page_content = page_content
+            num_of_loops = page_content_text_length // MAX_LENGTH
+            for loop_num in range(1, num_of_loops+1):
+                page_content = Paragraph[original_page_content.paragraph.rich_text[
+                    (loop_num-1)*MAX_LENGTH:loop_num*MAX_LENGTH]
+                ]
+                notion.blocks.children.append(new_page, page_content)
+        else:
+             notion.blocks.children.append(new_page, page_content)
         block_id = new_page.id
         if enable_book_cover:
             # Fetch a book cover from Google Books if the cover for the page is not set
