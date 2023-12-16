@@ -6,6 +6,18 @@ from kindle2notion.__main__ import (
     update_kindle_clippings_streamlit,
 )
 
+st.set_page_config(
+    page_title="Kindle 2 Notion",
+    page_icon="📓",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    menu_items={
+        "Get help": "https://github.com/paperboi/kindle2notion",
+        "Report a bug": "https://github.com/paperboi/kindle2notion/issues",
+        "About": "Streamlit adaptation for [Kindle2Notion library](https://github.com/paperboi/kindle2notion)",
+    },
+)
+
 
 def main():
     st.write(
