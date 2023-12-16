@@ -8,7 +8,16 @@ def read_raw_clippings(clippings_file_path: Path) -> str:
         raw_clippings_text_decoded = raw_clippings_text.encode(
             "utf-8-sig", errors="ignore"
         ).decode()
-        raw_clippings_text_decoded = raw_clippings_text_decoded.replace(u"\ufeff", "")
+        raw_clippings_text_decoded = raw_clippings_text_decoded.replace("\ufeff", "")
+    except UnicodeEncodeError as e:
+        print(e)
+
+    return raw_clippings_text_decoded
+
+
+def read_raw_clippings_streamlit(raw_clippings_text: str) -> str:
+    try:
+        raw_clippings_text_decoded = raw_clippings_text.replace("\ufeff", "")
     except UnicodeEncodeError as e:
         print(e)
 
