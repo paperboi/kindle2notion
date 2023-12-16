@@ -49,7 +49,7 @@ def main():
         type="password",
     )
     notion_database_id = form.text_input(
-        "Notion Database Id",
+        "Notion Database ID",
         help="""
         Find your _notion_database_id_ from the URL of the database you have copied to your workspace. For reference: 
         
