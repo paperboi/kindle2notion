@@ -1,5 +1,7 @@
 click>=8.0.0
 notional>=0.4.1
-pathlib
+pathlib~=1.0.1
 dateparser>=1.0.0
 requests>=2.25.0
+streamlit~=1.29.0
+setuptools~=65.5.1

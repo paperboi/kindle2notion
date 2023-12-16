@@ -162,3 +162,5 @@ MyClippings.txt
 dist/
 images/
 my_kindle_clippings.json
+/My Clippings.txt
+.streamlit/secrets.toml
