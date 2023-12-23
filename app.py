@@ -44,10 +44,6 @@ def main():
     """
         )
     form = st.form("kindle_form")
-    notion_api_auth_token = form.text_input(
-        "Notion API Token",
-        type="password",
-    )
     notion_database_id = form.text_input(
         "Notion Database ID",
         help="""
@@ -57,6 +53,10 @@ def main():
         
         **_a8aec43384f447ed84390e8e42c2e089_** is the database_id
         """,
+    )
+    notion_api_auth_token = form.text_input(
+        "Notion API Token",
+        type="password",
     )
     clippings_file = form.file_uploader("Upload your clippings file", type=["txt"])
     enable_highlight_date = form.toggle(
