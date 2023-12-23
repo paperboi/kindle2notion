@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 import notional
 from notional.blocks import Paragraph, TextObject, Quote
 from notional.query import TextCondition
-from notional.types import Date, ExternalFile, Number, RichText, Title
+from notional.types import Date, ExternalFile, Number, RichText, Title, DatabaseRef
 from requests import get
 
 # from notional.text import Annotations
@@ -124,7 +124,7 @@ def _add_book_to_notion(
     # Add a new book to the database
     if not title_exists:
         new_page = notion.pages.create(
-            parent=notion.databases.retrieve(notion_database_id),
+            parent=DatabaseRef(database_id=notion_database_id),
             properties={
                 "Title": Title[title],
                 "Author": RichText[author],
