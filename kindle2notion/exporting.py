@@ -171,7 +171,7 @@ def _add_book_to_notion(
         page_content = Paragraph["".join(formatted_clippings)]
         notion.blocks.children.append(page, page_content)
         # TODO: Delete existing page children (or figure out how to find changes to be made by comparing it with local json file.)
-        current_clippings_count = int(str(page["Highlights"]))
+        current_clippings_count = int(float(str(page["Highlights"])))
         page["Highlights"] = Number[clippings_count]
         page["Last Highlighted"] = Date[last_date.isoformat()]
         page["Last Synced"] = Date[datetime.now().isoformat()]
