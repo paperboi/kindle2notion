@@ -1,0 +1,25 @@
+[project]
+name = "kindle2notion"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.13.5",
+    "click>=8.0.0",
+    "dateparser>=1.0.0",
+    "fuzzysearch>=0.8.0",
+    "ipykernel>=6.30.1",
+    "ipython>=9.5.0",
+    "mobi>=0.4.0",
+    "notional>=0.4.1",
+    "pathlib>=1.0.1",
+    "requests>=2.25.0",
+    "rich>=14.1.0",
+    "tqdm>=4.67.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.11",
+]
